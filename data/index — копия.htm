@@ -1,0 +1,1610 @@
+<html lang="ru-RU" dir="ltr">
+<head>
+    <title>ESP Weather Station</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+    html, body {
+        min-height: 100%;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-rendering: optimizelegibility;
+        background-color: #007fd5;
+        color: #fff;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+    body, input { text-shadow: 0 1px 1px #000; }
+
+    .loading {
+        position: absolute;
+        width: 100%;
+        top: 150px;
+        text-align: center;
+        color: #294052;
+        font: bold italic 16px Arial;
+    }
+
+    #circularG{
+        position:relative;
+        width:58px;
+        height:58px;
+        margin: auto;
+    }
+    .circularG{
+        position:absolute;
+        background-color: #FFF;
+        width:14px;
+        height:14px;
+        border-radius:9px;
+        -o-border-radius:9px;
+        -ms-border-radius:9px;
+        -webkit-border-radius:9px;
+        -moz-border-radius:9px;
+        animation-name:bounce_circularG;
+        -o-animation-name:bounce_circularG;
+        -ms-animation-name:bounce_circularG;
+        -webkit-animation-name:bounce_circularG;
+        -moz-animation-name:bounce_circularG;
+        animation-duration:1.1s;
+        -o-animation-duration:1.1s;
+        -ms-animation-duration:1.1s;
+        -webkit-animation-duration:1.1s;
+        -moz-animation-duration:1.1s;
+        animation-iteration-count:infinite;
+        -o-animation-iteration-count:infinite;
+        -ms-animation-iteration-count:infinite;
+        -webkit-animation-iteration-count:infinite;
+        -moz-animation-iteration-count:infinite;
+        animation-direction:normal;
+        -o-animation-direction:normal;
+        -ms-animation-direction:normal;
+        -webkit-animation-direction:normal;
+        -moz-animation-direction:normal;
+    }
+
+    #circularG_1{
+        left:0;
+        top:23px;
+        animation-delay:0.41s;
+        -o-animation-delay:0.41s;
+        -ms-animation-delay:0.41s;
+        -webkit-animation-delay:0.41s;
+        -moz-animation-delay:0.41s;
+    }
+
+    #circularG_2{
+        left:6px;
+        top:6px;
+        animation-delay:0.55s;
+        -o-animation-delay:0.55s;
+        -ms-animation-delay:0.55s;
+        -webkit-animation-delay:0.55s;
+        -moz-animation-delay:0.55s;
+    }
+
+    #circularG_3{
+        top:0;
+        left:23px;
+        animation-delay:0.69s;
+        -o-animation-delay:0.69s;
+        -ms-animation-delay:0.69s;
+        -webkit-animation-delay:0.69s;
+        -moz-animation-delay:0.69s;
+    }
+
+    #circularG_4{
+        right:6px;
+        top:6px;
+        animation-delay:0.83s;
+        -o-animation-delay:0.83s;
+        -ms-animation-delay:0.83s;
+        -webkit-animation-delay:0.83s;
+        -moz-animation-delay:0.83s;
+    }
+
+    #circularG_5{
+        right:0;
+        top:23px;
+        animation-delay:0.97s;
+        -o-animation-delay:0.97s;
+        -ms-animation-delay:0.97s;
+        -webkit-animation-delay:0.97s;
+        -moz-animation-delay:0.97s;
+    }
+
+    #circularG_6{
+        right:6px;
+        bottom:6px;
+        animation-delay:1.1s;
+        -o-animation-delay:1.1s;
+        -ms-animation-delay:1.1s;
+        -webkit-animation-delay:1.1s;
+        -moz-animation-delay:1.1s;
+    }
+
+    #circularG_7{
+        left:23px;
+        bottom:0;
+        animation-delay:1.24s;
+        -o-animation-delay:1.24s;
+        -ms-animation-delay:1.24s;
+        -webkit-animation-delay:1.24s;
+        -moz-animation-delay:1.24s;
+    }
+
+    #circularG_8{
+        left:6px;
+        bottom:6px;
+        animation-delay:1.38s;
+        -o-animation-delay:1.38s;
+        -ms-animation-delay:1.38s;
+        -webkit-animation-delay:1.38s;
+        -moz-animation-delay:1.38s;
+    }
+
+    @keyframes bounce_circularG{
+        0%{ transform:scale(1); }
+        100%{ transform:scale(.3); }
+    }
+    @-o-keyframes bounce_circularG{
+        0%{ -o-transform:scale(1); }
+        100%{ -o-transform:scale(.3); }
+    }
+    @-ms-keyframes bounce_circularG{
+        0%{ -ms-transform:scale(1); }
+        100%{ -ms-transform:scale(.3); }
+    }
+    @-webkit-keyframes bounce_circularG{
+        0%{ -webkit-transform:scale(1); }
+        100%{ -webkit-transform:scale(.3); }
+    }
+    @-moz-keyframes bounce_circularG{
+        0%{ -moz-transform:scale(1); }
+        100%{ -moz-transform:scale(.3); }
+    }
+
+    @keyframes animation-opacity {
+        10%{ transform:translate(5px, 4px) rotate(-.5deg); opacity:.32 }
+        20%{ transform:translate(-1px, 2px) rotate(.5deg); opacity:.63 }
+        30%{ transform:translate(1px, 1px) rotate(1.5deg); opacity:.49 }
+        40%{ transform:translate(3px, -1px) rotate(1.5deg); opacity:.81 }
+        50%{ transform:translate(1px, -2px) rotate(-.5deg); opacity:.97 }
+        60%{ transform:translate(-2px, -4px) rotate(2.5deg); opacity:.7 }
+        70%{ transform:translate(-3px, -2px) rotate(1.5deg); opacity:.99 }
+        80%{ transform:translate(3px, -1px) rotate(.5deg); opacity:.92 }
+        90%{ transform:translate(-4px, -4px) rotate(-.5deg); opacity:.01 }
+        0%,100%{ transform:translate(0, 0) rotate(0) }
+    }
+
+    a:link, a:visited { color: #fff; text-decoration: blink; }
+    a:hover { color: #95fa00; }
+
+    .skyContainer { padding: 0; margin: 0; height: 480px; position: relative; top: 120px; overflow: hidden; }
+    .mainContainer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    .sensorsContent { margin: auto; width: 1200px; }
+    .sensor { color: #fff; position: relative; float: left; width: 200px; }
+    .sensor .title { position: absolute; margin-top: 50px;  margin-left: 0px; width: 200px; text-align: center; font-size: 18px; font-weight: bold; }
+    .sensor .unit  { position: absolute; margin-top: 130px; margin-left: 0px; width: 200px; text-align: center; font-size: 20px; font-weight: bold; }
+
+    .sensorsContent div.menu { height: 60px; text-align: right; }
+
+    @media screen and (max-width:1250px) and (min-width:450px){
+        div.sensorsContent { width: 400px; }
+        div.sensor { width: 50%; }
+    }
+    @media screen and (max-width:600px) {
+        #graph { display: none; }
+    }
+    @media screen and (max-width:450px) {
+        body { padding: 0; }
+        div.sensorsContent, .sensor { width: 200px; }
+        div.settings .form, div.alert .message { max-width: 90%; }
+        div.authorized .form { top: 10%; }
+        div.copyright { position: relative; }
+    }
+
+    img#settings, img#graph { z-index: 2; position: relative; right: 0; top: 10px; cursor: pointer; width: 35px; height: 35px; }
+    img#settings:hover, img#graph:hover {
+        animation-name: shake-opacity;
+        animation-duration: .5s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+    }
+    select, input { outline: none; -webkit-appearance: none; }
+
+    .shadow, .alert { z-index: 3; width: 100%; height: calc(100% + 400px); position: fixed; background-color: rgba(0, 0, 0, 0.8); top: -200px; }
+    .alert { z-index: 5; background-color: rgba(105, 12, 12, 0.8); }
+    .alert .message { position: absolute; margin: auto; top: 250px; left: 0; right: 0; color: #fff; max-width: 400px; background-color: rgba(57, 66, 72, 0.9); border-radius: 3px; border: 2px solid rgba(255,255,255,0.3); padding: 15px; font-family: 'Trebuchet MS', 'Lucida Sans'; font-size: 13px; }
+    .alert .message .head { padding: 0 0 10px 0; font-size: 20px; }
+    .alert .message .text { text-align: left; vertical-align: middle; padding: 5px 0 5px 0; border-top: 2px solid rgba(255,255,255,0.3); white-space: pre-line; }
+
+    .settings, .authorized { z-index: 4; width: 100%; height: 100%; position: absolute; top: 0; right: 0; bottom: 0; left: 0; font-family: 'Trebuchet MS', 'Lucida Sans'; font-size: 13px; color: white; }
+    .settings img.close, .authorized img.close, .graph img.close, .alert .message img.close { position: absolute; top: 10px; right: 10px; cursor: pointer; width: 30px; height: 30px; }
+    .settings .form { max-width: 400px; position: absolute; margin: auto; top: 50px; left: 0; right: 0; background-color: rgba(57, 66, 72, 0.9); border-radius: 3px; border: 2px solid rgba(255,255,255,0.3); padding: 15px; margin-bottom: 10px; }
+    .settings .form .head { padding: 0 0 5px 0; font-size: 20px; }
+
+    .settings .form .content { display: table; width: 100%; margin-top: 10px; }
+    .settings .form .content #formTitle { display: table-cell; width: 150px; text-align: center; vertical-align: middle; background-color: rgba(151, 159, 166, 0.3); border-radius: 3px 0 0 3px; }
+    .settings .form .content #formInput { display: table-cell; }
+    .settings .form .content #formInput input { width: 100%; height: 100%; background-color: transparent; border: 2px solid rgba(151, 159, 166, 0.3); border-radius: 0 3px 3px 0; font-size: 20px; color: white; padding: 5px 5px; display: block; -moz-box-sizing: border-box; box-sizing: border-box; }
+    .settings .form .content #formInput input:focus { border-color: #66afe9; outline: 0; -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
+
+    .settings .form #sl-spiffs #filesList .deleting,
+    .settings .form #sl-spiffs #filesList .content { display: table; width: 100%; margin-top: 10px; background-color: rgba(151, 159, 166, 0.3); border-radius: 3px; }
+    .settings .form #sl-spiffs #filesList .content:hover { background-color: rgba(151, 159, 166, 0.05); }
+    .settings .form #sl-spiffs #filesList .deleting { background-color: #c36d60 }
+    .settings .form #sl-spiffs #filesList #file { display: table-cell; height: 37px; text-align: left; vertical-align: middle; padding-left: 10px; }
+    .settings .form #sl-spiffs #filesList #file #name { display: table-cell; float: left; }
+    .settings .form #sl-spiffs #filesList #file #size { display: table-cell; float: right; padding-right: 10px; }
+    .settings .form #sl-spiffs #filesList #delete { display: table-cell; width: 1px; text-align: center; vertical-align: middle; background-color: rgba(151, 159, 166, 0.3); padding: 0 10px 0 10px; border-radius: 0 3px 3px 0; }
+    .settings .form #sl-spiffs #filesList #delete:hover { cursor: pointer; background-color: rgb(255, 95, 68); }
+
+    .settings .form #sl-i2c #i2cList .content { display: table; width: 100%; margin-top: 10px; background-color: rgba(151, 159, 166, 0.3); border-radius: 3px; }
+    .settings .form #sl-i2c #i2cList .content:hover { background-color: rgba(151, 159, 166, 0.05); }
+    .settings .form #sl-i2c #i2cList #address { display: table-cell; width: 68px; height: 37px; text-align: center; vertical-align: middle; background-color: rgba(151, 159, 166, 0.3); border-radius: 3px 0 0 3px; }
+    .settings .form #sl-i2c #i2cList #description { display: table-cell; text-align: left; vertical-align: middle; padding: 0 10px 0 10px; }
+
+    .settings .form #sl-system .button { font-weight: bold; text-align: center; display: table-cell; vertical-align: middle; height: 37px; background-color: rgba(255, 95, 68, 0.7); border: 2px solid rgba(255,255,255,0.40); border-radius: 3px; margin: 10px 0 0 0; cursor: pointer; }
+    .settings .form #sl-system .button:hover { background-color: rgba(255, 95, 68, 0.85); animation-name:animation-opacity; animation-duration:.5s; animation-timing-function: ease-in-out; animation-iteration-count:infinite; }
+    .settings .form #sl-system #formTitle,
+    .settings .form #sl-system #formInput { height: 37px; }
+    .settings .form #sl-system #formInput { border: 2px solid rgba(151, 159, 166, 0.3); border-radius: 0 3px 3px 0; font-size: 20px; color: white; padding: 5px 5px; vertical-align: middle; }
+
+    .settings input[type="submit"] { background-color: #28D75C; border: 2px solid rgba(255,255,255,0.40); color: rgb(37, 37, 37); font-weight: bold; cursor: pointer; box-sizing: border-box; width: 100%; border-radius: 3px; height: 37px; margin-top: 10px; font-size: 14px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
+    .settings input[type="submit"]:hover { color: rgba(40, 215, 92, 1); background-color: rgba(57, 66, 72, 0.4); }
+
+    .settings .form .section { font-weight: bold; text-align: left; vertical-align: middle; background-color: rgba(255, 255, 255, 0.7); color: #303030; border-radius: 3px; margin: 10px 0 0 0; padding: 11px; text-shadow: 0 1px 1px rgba(151, 159, 166, 0.80); }
+    .settings .form .menuList { text-align: left; vertical-align: middle; background-color: rgba(151, 159, 166, 0.3); border-radius: 3px; margin: 10px 0 0 0; padding: 11px; }
+    .settings .form .menuList:hover { background-color: rgba(102, 175, 233, 0.3); cursor: pointer; }
+
+    .settings .form #dropZone { color: white; font-weight: bold; text-align: center; vertical-align: middle; border-radius: 3px; margin: 10px 0 0 0; padding: 0 10px 0 10px; }
+    .settings .form #dropZone.default { background-color: rgba(102, 175, 233, 0.3); }
+    .settings .form #dropZone.hover { background-color: rgba(40, 215, 92, 0.5); }
+    .settings .form #dropZone.error { background-color: rgba(255, 0, 0, 0.42); }
+
+    .settings .form #sl-firmware #dropZone { height: 200px; }
+    .settings .form #sl-firmware span { top: 43%; position: relative; }
+
+    .settings .form #sl-spiffs #dropZone { height: 100px; }
+    .settings .form #sl-spiffs span { top: 43%; position: relative; }
+
+    .settings .form #sl-narodmon .button { font-weight: bold; text-align: center; display: table-cell; vertical-align: middle; height: 37px; background-color: #28D75C; border: 2px solid rgba(255,255,255,0.40); color: rgb(37, 37, 37); border-radius: 3px; margin: 10px 0 0 0; cursor: pointer; font-size: 14px; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
+    .settings .form #sl-narodmon .button:hover { color: rgba(40, 215, 92, 1); background-color: rgba(57, 66, 72, 0.4); }
+
+    .authorized .form { width: 200px; height: 200px; position: absolute; margin: auto; top: 50px; left: 0; right: 0; background-color: rgba(57, 66, 72, 0.9); border-radius: 3px; border: 2px solid rgba(255, 255, 255, 0.3); padding: 15px; }
+    .authorized input { box-sizing: border-box; width: 100%; border-radius: 3px; height: 40px; margin-top: 10px; font-size: 14px; text-align: center; color: white; }
+    .authorized input[type="submit"] { background-color: #28D75C; border: 2px solid rgba(255,255,255,0.40); color: rgb(37, 37, 37); font-weight: bold; cursor: pointer; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
+    .authorized input[type="submit"]:hover { color: rgba(40, 215, 92, 1); background-color: rgba(57, 66, 72, 0.4); }
+    .authorized input:not([type='submit']) { background-color: rgba(203, 236, 255, 0); border: 2px solid rgba(255, 255, 255, 0.40); }
+    .authorized input:not([type='submit']):focus { border: 2px solid rgba(102, 175, 233, 1); -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
+
+    input[placeholder] { text-overflow: ellipsis; text-shadow: none; }
+
+    input[type="text"]::-webkit-input-placeholder { color: rgba(255, 255, 255, 0.2); }
+    input[type="text"]::-moz-placeholder { color: rgba(255, 255, 255, 0.2); }
+    input[type="text"]:-moz-placeholder { color: rgba(255, 255, 255, 0.2); }
+    input[type="text"]:-ms-input-placeholder { color: rgba(255, 255, 255, 0.2); }
+
+    input::-webkit-input-placeholder { text-indent: 0; transition: text-indent 0.3s ease; }
+    input::-moz-placeholder { text-indent: 0; transition: text-indent 0.3s ease; }
+    input:-moz-placeholder { text-indent: 0; transition: text-indent 0.3s ease; }
+    input:-ms-input-placeholder { text-indent: 0; transition: text-indent 0.3s ease; }
+
+    input:focus::-webkit-input-placeholder { text-indent: 500px; transition: text-indent 0.3s ease; }
+    input:focus::-moz-placeholder { text-indent: 500px; transition: text-indent 0.3s ease; }
+    input:focus:-moz-placeholder { text-indent: 500px; transition: text-indent 0.3s ease; }
+    input:focus:-ms-input-placeholder { text-indent: 500px; transition: text-indent 0.3s ease; }
+
+    .copyright { position: absolute; bottom: 0; left: 0; width: 100%; text-align: center; line-height: 100px; font-family: cursive, serif, monospace; font-size: 14px; color: #fff; }
+</style>
+<body>
+<div class="loading">
+    <div id="circularG">
+        <div id="circularG_1" class="circularG"></div>
+        <div id="circularG_2" class="circularG"></div>
+        <div id="circularG_3" class="circularG"></div>
+        <div id="circularG_4" class="circularG"></div>
+        <div id="circularG_5" class="circularG"></div>
+        <div id="circularG_6" class="circularG"></div>
+        <div id="circularG_7" class="circularG"></div>
+        <div id="circularG_8" class="circularG"></div>
+    </div>
+</div>
+<div class="skyContainer">
+    <div class="moon" hidden></div>
+    <div class="clouds_one" hidden></div>
+    <div class="clouds_two" hidden></div>
+    <div class="clouds_three" hidden></div>
+</div>
+<div class="shadow" hidden></div>
+<div class="alert" hidden>
+    <div class="message">
+        <img src="close.png" class="close">
+        <div class="head">Оповещение</div>
+        <div class="text">Текст оповещения</div>
+    </div>
+</div>
+<div class="settings" hidden>
+    <div class="form">
+        <img src="close.png" class="close">
+        <div class="head">Настройки</div>
+
+        <div class="menuList" id="global">Основные настройки Wi-Fi</div>
+        <div class="menuList" id="system">Система</div>
+        <div class="menuList" id="firmware">Обновление прошивки</div>
+        <div class="menuList" id="spiffs">Файловая система</div>
+        <div class="menuList" id="i2c">Устройства на I2C шине</div>
+        <div class="menuList" id="mqtt">MQTT (Message Queue Telemetry Transport)</div>
+        <div class="menuList" id="narodmon">Народный мониторинг (narodmon.ru)</div>
+        <div class="menuList" id="helpTheProject">Помочь проекту</div>
+
+        <div id="sl-global" hidden>
+            <div class="section">Домашняя сеть</div>
+            <div class="content">
+                <div id="formTitle">Ваша сеть Wi-Fi</div>
+                <div id="formInput"><input type="text" id="client_ssid" autocomplete="off"></div>
+            </div>
+            <div class="content">
+                <div id="formTitle">Пароль</div>
+                <div id="formInput"><input type="password" id="client_pass" autocomplete="off"></div>
+            </div>
+            <div class="section">ESP в качестве точки доступа (аварийный режим)</div>
+            <div class="content">
+                <div id="formTitle">Имя точки доступа</div>
+                <div id="formInput"><input type="text" id="softap_ssid" autocomplete="off" placeholder="espWeatherStation"></div>
+            </div>
+            <div class="content">
+                <div id="formTitle">Пароль</div>
+                <div id="formInput"><input type="password" id="softap_pass" autocomplete="off"></div>
+            </div>
+            <div class="content">
+                <div id="formTitle">Подтвердить пароль</div>
+                <div id="formInput"><input type="password" id="softap_pass_repeat" autocomplete="off"></div>
+            </div>
+            <div class="section">Панель управления</div>
+            <div class="content">
+                <div id="formTitle">Пароль админа</div>
+                <div id="formInput"><input type="password" id="admin_pass" autocomplete="off"></div>
+            </div>
+            <div class="content">
+                <div id="formTitle">Подтвердить пароль</div>
+                <div id="formInput"><input type="password" id="admin_pass_repeat" autocomplete="off"></div>
+            </div>
+        </div>
+
+        <div id="sl-system" hidden>
+            <div class="section">Сеть</div>
+            <div class="content" id="mac">
+                <div id="formTitle">MAC</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="section">Основная информация</div>
+            <div class="content" id="vcc">
+                <div id="formTitle">Питание</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="freeHeap">
+                <div id="formTitle">Свободно памяти</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="chipId">
+                <div id="formTitle">Чип ID</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="sdkVersion">
+                <div id="formTitle">Версия SDK</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="coreVersion">
+                <div id="formTitle">Версия ядра</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="cpuFreqMHz">
+                <div id="formTitle">Частота CPU</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="bootVersion">
+                <div id="formTitle">Версия загрузчика</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="section">Flash память</div>
+            <div class="content" id="flashRealSize">
+                <div id="formTitle">Размер</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="flashChipId">
+                <div id="formTitle">Чип ID</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="flashChipSpeed">
+                <div id="formTitle">Чип Speed</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="section">Микропрограмма (скетч)</div>
+            <div class="content" id="sketchSize">
+                <div id="formTitle">Занято</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="freeSketchSpace">
+                <div id="formTitle">Доступно</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="sketchMD5">
+                <div id="formTitle">MD5 Хеш</div>
+                <div id="formInput" style="font-size: 14px;"></div>
+            </div>
+            <div class="section">Последний перезапуск контроллера</div>
+            <div class="content" id="resetReason">
+                <div id="formTitle">Причина</div>
+                <div id="formInput"></div>
+            </div>
+            <div class="content" id="resetInfo">
+                <div id="formTitle">Информация</div>
+                <div id="formInput" style="font-size: 14px;"></div>
+            </div>
+            <div class="section">Управление</div>
+            <div class="content">
+                <div class="button" id="reboot">Перезагрузить контроллер</div>
+            </div>
+            <div class="content">
+                <div class="button" id="hardReset">Сброс всех настроек</div>
+            </div>
+        </div>
+
+        <div id="sl-firmware" hidden>
+            <div id="dropZone" class="default">
+                <span>Переместите файл <u>прошивки</u> в эту область экрана</span>
+            </div>
+        </div>
+
+        <div id="sl-spiffs" hidden>
+            <div id="dropZone" class="default">
+                <span>Переместите файл в эту область экрана</span>
+            </div>
+            <div class="section" id="freeSizeDesc" style="text-align: center;">Содержимое флеш памяти</div>
+            <div id="filesList" hidden>
+                <div class="content">
+                    <div id="file">
+                        <div id="name">{name}</div>
+                        <div id="size">{size}</div>
+                    </div>
+                    <div id="delete">удалить</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sl-i2c" hidden>
+            <div class="section" id="i2cDesc">Не найдено ни одного устройства</div>
+            <div id="i2cList">
+                <div class="content">
+                    <div id="address">{address}</div>
+                    <div id="description">{description}</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sl-mqtt" hidden>
+            <div class="section">Настройки сервера</div>
+            <div class="content">
+                <div id="formTitle">Адрес сервера</div>
+                <div id="formInput"><input type="text" id="mqtt_server" autocomplete="off" placeholder="mqtt.it4it.club"></div>
+            </div>
+            <div class="content">
+                <div id="formTitle">Пользователь</div>
+                <div id="formInput"><input type="text" id="mqtt_login" autocomplete="off"></div>
+            </div>
+            <div class="content">
+                <div id="formTitle">Пароль</div>
+                <div id="formInput"><input type="password" id="mqtt_pass" autocomplete="off"></div>
+            </div>
+            <div class="section">Настройки топика</div>
+            <div class="content">
+                <div id="formTitle">Корневой путь</div>
+                <div id="formInput"><input type="text" id="mqtt_path" autocomplete="off" placeholder="espWeatherStation"></div>
+            </div>
+        </div>
+
+        <div id="sl-narodmon" hidden>
+            <div class="content">
+                <div id="formTitle">Идентификатор</div>
+                <div id="formInput"><input type="text" id="narodmon_id" autocomplete="off" placeholder="1A:2B:C3:DE:45:6F"></div>
+            </div>
+            <div class="content">
+                <div class="button" id="use_mac_address">Использовать MAC адрес устройства</div>
+            </div>
+        </div>
+
+        <div id="sl-helpTheProject" hidden>
+            <div style="text-align: left; vertical-align: middle; background-color: rgba(151, 159, 166, 0.3); border-radius: 3px; margin: 10px 0 0 0; padding: 11px;">
+                <p>Друзья, спасибо, что проявили интерес к нашему проекту.</p>
+                <p>Мы очень надеемся, что он будет Вам полезен в реализации собственных задумок. Если Вам потребуется какая-либо помощь или Вы захотите поделиться своими идеями, то обязательно приходите к нам на <a href="https://it4it.club" style="color: #95fa00;" target="_blank">it4it.club</a>, мы будем Вам очень рады. <a href="https://it4it.club/topic/55-meteostanciya-na-esp8266-ot-it4itclub/" style="color: #95fa00;" target="_blank">Тема посвящённая проекту находится тут.</a></p></p>
+                <p>Все исходники проекта распространяются абсолютно бесплатно, и Вы в праве распоряжаться ими как Вам угодно. Но если Вы захотите оказать нам финансовую помощь, мы будем только рады.
+                <p style="font-size: 20px; line-height: 1.5; text-align: center;"><a href="https://money.yandex.ru/to/410014941215337" style="color: #95fa00;" target="_blank">Yandex.Money</a><br><a href="https://paypal.me/kitsum" style="color: #95fa00;" target="_blank">PayPal.me</a></p>
+            </div>
+        </div>
+
+        <input type='submit' value='Сохранить' hidden>
+    </div>
+</div>
+<div class="authorized" hidden>
+    <div class="form">
+        <img src="close.png" class="close">
+        <div style="text-align: center; padding: 10px; font-size: 18px;">Авторизация</div>
+        <input type='login' placeholder='Логин' autocomplete="off">
+        <input type='password' placeholder='Пароль' autocomplete="off">
+        <input type='submit' value='Войти в систему'>
+    </div>
+</div>
+<div class="mainContainer">
+    <div class="graph" style="width: 100%; z-index: 4; top: 50px; position: absolute; text-shadow: none;" hidden>
+        <img class="update" width="30" height="30" style="position: absolute; top: -40px; right: 45px; cursor: pointer;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAB/ElEQVRIS9VW7VECUQzcrUCtQDvQDpQOtAK1A6xAqECsQKhAOlA7kA6wAqWCOMvkmBzc3QvoyJh/cHlvs/naR+zJuCdc/C9gMzsEcKpskXzbJWtpxmZ2AeAawCUAAUf7AjAF8EjyPRNIEdjMzgA8ABBwZZHlir1/fAVwS3Ku32Z2AuAYwIykAlxaJ7CZ3TioLp8BGJAUsw1z376XQAACn5rZAMA9gB5JBdUN7Bc9ud8dyVEmhQFI7j3PVA7Y0/vitbxqY9kWSAhazMVSfVFmbGZyPgeQZroexBrzJfvOVHv3iq2aQY2VttCI1ZnYkEXgsY/NLikWkIJusiKw6nJAsjhqDelV97dl6b11nHwjfQJ4IxnTlE531rHGKtT3b4Gz0W7jFyakPE7bXFzyDcBHpRovVafBaru2BKjvoWcWJGvC0lbj4jgkgbWxngFMSGrvr6wEHFWon5W86nYzk0JJmWr11fcS8JCk1GVrMzMpleS0cULagD9cIA5c3rTN0hZEYiF1aspU6xxLe8P6kw4PM8iBqdylyY1Bdy4QM1Nz6KCY60kzIjlpCsB9lVq9OMRUPdGaqXVgHVL3zatD/nTRBZLJyhTE6hnT8CwqNmJaCFzy1DDKgjIQTQz1JBpHze0qTRp4/RLf6/q7pjqZPtgYp+yh3/DbmfFPwfcG/A00veUfRq/l8wAAAABJRU5ErkJggg==">
+        <img src="close.png" class="close" style="position: absolute; top: -40px; right: 10px;">
+        <div class="graph" id="graph24h" style="margin: 0 auto;" data-highcharts-chart="0"></div>
+    </div>
+    <div class="sensorsContent" hidden>
+        <div class="menu">
+            <img id="graph" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAELUlEQVRYR82Y8VGbMQzFpQnaTNB0giYTNJmgMEFhAsIEDROUTlCYoDBBYYLCBMAEwATq/XxSTnHs5OOgd/U/5b7Y8tPTk2RV5T9a2sJiZu9F5Mh/+6GqT3mf//5JRGbVefbdiMhtfWaIzz0wf0Tkoxu4U9WpA/giIgsRmSTjzw6Ab+/S9wsRuRKR86HAemBMRPbd8C8HsBQRGLv0Sy5U9b722MzGIrLnrAGePUtVPd/FzjYwcz/82//FGEbv/UIugg0uj0WIuPwy7cOJr87efsuBODwEzBmequqNmaGRbw2tXIvI58pzgB2r6pWfww5hnGOrxdIuMHiJKAnPzwYIbLIHFtEZ++qFbg7dDn8j/GkL0AYYF+qje4BXXIBXcVEt1J4UQlvfHUhhxMxg5YMDWtNcCwweciGH8WRtmRkaIFS7VugHMceaOpP89kiWZiNrYMyMtMWTf7UIOQAQPYlxqKqwXtYKjIfjzr/levHWwK5UdW5mgED06KcU1QzmwEVKsePvXigePOYvBUnGEXbsInj0gvNk3GkNBq08qOqembEp1w/2IshF1ImUroixXrSDUqXNDAAwgE74GynceFWnSgt3rsCkDCIFOQSwvGAD49QZeha0spdvURTzfnTx5IUvwNSAiQAg0OiIUJUwmRkfKft5Qz5MfzkwM1I+UvxEVZdmRuvI60REoP3MWe6BORYRmCEKJXMDTElXVVUXFuV714IZjAEwFmEemxmO4e0sham2x2tg4c4U3WQwlPxJOrxNqNd+EQzEU4PLcj+LPTUzYTd+J+SnsJzBzJInGCajoHBDnK4dQkuLiBWhDPH3wCCFUlvSfaT7GpgjVR0lZki9OqNuO0CwzSUImmxhkTGEAfYQPj2JFXYDLGEmZCswpfK6Zmrqw/NtQPCy2XQ57GWgzrquZkDO5l42RWpjOzwPkISzVWt6YYpz3WwiXaErb8haKYZb6bUlW3aBadcZp3JVDb3NE2PA4XnEu4Vn6DfCjF54IZYKbWabFdjBRMcOIVIrqD8w0mRlKArfFw90NJl706pz11279A+vtr3K+UIMG9sjfKQ3Tk42urazE5279BbvU2/5nGCsiUd8/z0T+F0vAABQ3Qjp3NSeIRpCI6y8N156NOLn6Oxxd+vZyWWEK4Y3ABEyAKIrqM1PyV7YaJiwS1eGESo8b+AYEMf1cNebDgDAIUAhtniU1+MIQKhBAARws954RgKM0GB72HSQwhWMUH9QfMw/ZEMdJoDUGUeYeIzFOfrYKBhq0dkt4S5oQkZKcjnq5w0TEyWh4vc8d8dEUEZfnzx5ZpIYpZ1sm7u3gkksYYyaQxiiXpQRtvYwjb6hLcLIWLyaAnoiGwTGWUI3gOISqmisKAEwlCfKGOJ48a39l8qrwWQD/mbm8hpAAOP5MAhAtjuYmdeW3SHn/wLgPRdCt/CXvwAAAABJRU5ErkJggg==" style="right: 5px;">
+            <img id="settings" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAC6klEQVRYR82YgU0bQRBF/1RAqCBJBYEKIBUkHSRUEFIBTgWQCoAKMBUkVBBTQaCCOBVM9I5Za30+n2dNLDESknW63f3758/8OUwvKOwFYdFWYNz9laQPkj5K4vcbSQ/x983M+N0czWDc/UDSTQC4lzSNUwEFuD1JE0nXZjZvQdQEJoD8kPTIwX0GgrGrYA0ghy0stYIByFtJB2O3DlAzSTMzg61UpMHEAX8knZgZtx8Nd/8s6RLwWXZawHBDtJLavBU8N2sBgyjPzKxljUuiuli7MVo23gYMaf2+CzAlTfvZknX3nTFDf/kl6b2Z/dzE+U41w+Fx069mdpEAU5hMgW8VcNPm7n4c3XmSAd8K5lTSeWM1/Q5b+O/VVDTDxlTIqO+4O0aKb6WaZBMzoRk676dNIq7Ee2dmpCsV6T4TYHBmeseoiLexgmZmKnaOzAzDHAx3Ryv3LSa5LRgGKRx5amaY4VK4O2XPc5y9G7LcnTWkl3hcZ7RNaSqnunvX9Ib04O6IFpE/FJFHmTN+EHMz2y9prwvhOWD2zOxwgBl0RXA4FXcSTJ1V73YzUYwY6K8bSZ4D5ihmXkp3YQ9RSQDhsGx05d8MJkZPPKoEc/BxTXekEbDZ6CwjBSZuiwBx7Im7l37zN4Ag6EWEYKmoTDC4d4UwCiY2Jdd11aABREpq8J3ydVCqBkZodPUaQGMnVBfPS2WBgWdcbjYIJpgABBv0A1FCa8eGu1+aGQD53Q1gA2uWLMHdWfuu/94KmKQAAURFnD9V+BPNI2CWxogof7xrKYbA0LS+ZJId7ywOChuAzf6tryr2KH30VFpAOepuCUxlcFksdFO661Ks2YfUoA/0VAMZFnCvU2YA3Q75j7t3s09mg2iMfP7M+8ysE+C6fVc+Q4KVoTSMYWM+Ou2DgfIV2kd2wX9W/uNQjRAsvY1u/Lra5zrSxbNF00w1vSTdfd1QYZjitAeuK79gkHRelO69MzA1sp4WmXMGfesfLxB5NKNe/tMAAAAASUVORK5CYII=">
+        </div>
+        <div class="sensor">
+            <div class="title">Температура</div>
+            <div class="unit">&deg;C</div>
+            <input class="knob temperature" data-width="200" data-displayPrevious=true data-fgColor="#FFF" data-skin="tron" data-thickness=".1" value="0" data-min="-40" data-max="125" data-step=".1" readonly>
+        </div>
+        <div class="sensor">
+            <div class="title">Влажность</div>
+            <div class="unit">%</div>
+            <input class="knob humidity" data-width="200" data-displayPrevious=true data-fgColor="#FFF" data-skin="tron" data-thickness=".1" value="0" data-min="0" data-max="100" readonly>
+        </div>
+        <div class="sensor">
+            <div class="title">Темп Внеш</div>
+            <div class="unit">&deg;C</div>
+            <input class="knob temperatureExt" data-width="200" data-displayPrevious=true data-fgColor="#FFF" data-skin="tron" data-thickness=".1" value="0" data-min="-40" data-max="125" data-step=".1" readonly>
+        </div>
+        <div class="sensor">
+            <div class="title">Влаж Внеш</div>
+            <div class="unit">%</div>
+            <input class="knob humidityExt" data-width="200" data-displayPrevious=true data-fgColor="#FFF" data-skin="tron" data-thickness=".1" value="0" data-min="0" data-max="100" readonly>
+        </div>
+        <div class="sensor">
+            <div class="title">Конц CO2</div>
+            <div class="unit">ppm</div>
+            <input class="knob carbdiox" data-width="200" data-displayPrevious=true data-fgColor="#FFF" data-skin="tron" data-thickness=".1" value="0" data-min="0" data-max="5000" readonly>
+        </div>
+        <div class="sensor">
+            <div class="title">Давление</div>
+            <div class="unit">mm</div>
+            <input class="knob pressure" data-width="200" data-displayPrevious=true data-fgColor="#FFF" data-skin="tron" data-thickness=".1" value="0" data-min="-500" data-max="5000" data-step=".1" readonly>
+        </div>
+        <div class="copyright"><a href="https://it4it.club" target="_blank">Go on iT4iT.CLUB</a></div>
+    </div>
+</div>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" charset="UTF-8"></script>
+<script>
+    window.jQuery || document.write('<script src="jquery.min.js"><\/script>');
+</script>
+<script src="jquery.knob.min.js"></script>
+<script src="md5.js"></script>
+<script src="highcharts.js"></script>
+<script>
+    var domain = "";
+    var spiffs = "";
+    var spiffsSize = 0;
+    var spiffsFreeSize = 0;
+    var i2c = "";
+    var allowAjaxConnection = true;
+    var graph;
+    var COLOR_ALERT_RED   = "rgba(105, 12, 12, 0.8)";
+    var COLOR_ALERT_GREEN = "rgba(5, 165, 52, 0.26)";
+    var COLOR_ALERT_GRAY  = "rgba(57, 66, 72, 0.91)";
+
+    $(function($) {
+        $(".knob").knob({
+            draw : function () {
+                if(this.$.data('skin') === 'tron') {
+                    this.cursorExt = 0.3;
+                    var a = this.arc(this.cv), pa, r = 1;
+                    this.g.lineWidth = this.lineWidth;
+
+                    if (this.o.displayPrevious) {
+                        pa = this.arc(this.v);
+                        this.g.beginPath();
+                        this.g.strokeStyle = this.pColor;
+                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
+                        this.g.stroke();
+                    }
+
+                    this.g.beginPath();
+                    this.g.strokeStyle = r ? this.o.fgColor : this.fgColor ;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
+                    this.g.stroke();
+
+                    this.g.lineWidth = 2;
+                    this.g.beginPath();
+                    this.g.strokeStyle = this.o.fgColor;
+                    this.g.arc( this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+                    this.g.stroke();
+
+                    return false;
+                }
+            }
+        });
+    });
+
+    function animate(obj, val) {
+        if($(obj).val() === val) return false;
+        $({animatedVal: $(obj).val()}).animate({animatedVal: val}, {
+            duration: 2000,
+            easing: "swing",
+            step: function() { $(obj).val(this.animatedVal).trigger("change"); }
+        });
+        return true;
+    }
+
+    function chenge() {
+        if(allowAjaxConnection) {
+            //if($('div.settings').is(':visible')) return false;
+            $.ajax({
+                dataType: "json",
+                url:  domain + "api/sensors",
+                type: "GET",
+                cache: false,
+                timeout: 3000,
+                success: function(obj){
+                    animate(".temperature", obj.temperature);
+                    animate(".humidity", obj.humidity);
+                    animate(".pressure", obj.pressure);
+                    animate(".temperatureExt", obj.temperatureExt);
+                    animate(".humidityExt", obj.humidityExt);
+                    animate(".carbdiox", obj.carbdiox);
+                }
+            });
+        }
+        setTimeout(chenge, 5000);
+    }
+
+    function showSky(data) {
+        // css
+        $("style").append(data);
+        $(".loading").fadeOut(2000);
+        // анимация неба
+        $("body").addClass("sky");
+        $(".moon").show();
+        $(".clouds_one").show();
+        $(".clouds_two").show();
+        $(".clouds_three").show();
+    }
+
+    function loadSky() {
+        if(!allowAjaxConnection) return false;
+        $.ajax({
+            url:"http://projects.it4it.club/microcontrollers/esp8266/weather_station/cloud.css",
+            cache: true,
+            timeout: 3000,
+            success:function(data) {
+                showSky(data);
+            },
+            error:function() {
+                $.ajax({url: "cloud.css", cache: true,
+                    beforeSend: function() {
+                        allowAjaxConnection = false;
+                    },
+                    success: function(data) {
+                        showSky(data);
+                        allowAjaxConnection = true;
+                    },
+                    error: function() {
+                        //setTimeout(loadSky, 5000);
+                        $(".loading").fadeOut(2000);
+                        allowAjaxConnection = true;
+                    }
+                });
+            }
+        });
+    }
+    /*
+    function getRandom(min, max) {
+        min = Math.ceil(min) || 1;
+        max = Math.floor(max) || 1000;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    */
+    function formatBytes(bytes, float) {
+        if (bytes < 1024) return bytes.toFixed(float) + " B";
+        else if (bytes < Math.pow(1024, 2)) return (bytes / 1024).toFixed(float) + " KB";
+        else if (bytes < Math.pow(1024, 3)) return (bytes / Math.pow(1024, 2)).toFixed(float) + " MB";
+        else return (bytes / Math.pow(1024, 3)).toFixed(float) + " GB";
+    }
+
+    function apiGetSPIFFS() {
+        var filesList = $('#sl-spiffs #filesList');
+        var freeSizeDesc = $('#sl-spiffs #freeSizeDesc');
+
+        if(spiffs === "") spiffs = filesList.html();
+
+        $.ajax({
+            dataType: "json",
+            xhrFields: { withCredentials: true },
+            url: domain + "api/spiffs",
+            type: "GET",
+            cache: false,
+            beforeSend: function() {
+                allowAjaxConnection = false;
+            },
+            success: function(files) {
+                spiffsSize = files.flashSize;
+                freeSizeDesc.html('Содержимое флэш памяти');
+                if(files.count) {
+                    var content = '';
+                    var filesSize = 0;
+                    filesList.html(content);
+                    $.each(files.list, function (i, file) {
+                        content = spiffs;
+                        content = content.replace(/{name}/g, file.name);
+                        content = content.replace(/{size}/g, formatBytes(file.size, 2));
+                        filesList.append(content);
+                        filesSize += file.size;
+                    });
+                    filesList.show();
+                    filesList.find('.content div#delete').click(apiDeleteSPIFFS);
+                    spiffsFreeSize = spiffsSize - filesSize;
+                    freeSizeDesc.html(freeSizeDesc.html() + ', доступно ' + formatBytes(spiffsFreeSize, 2) + ' из ' + formatBytes(spiffsSize, 2));
+                }
+                allowAjaxConnection = true;
+            },
+            error: function() {
+                spiffs.html("Нет информации");
+                allowAjaxConnection = true;
+            }
+        });
+    }
+
+    function apiDeleteSPIFFS() {
+        if(!allowAjaxConnection) {
+            showAlert("Соединение занято, дождитесь окончания выполнения предыдущей команды");
+            return false;
+        }
+
+        var gui = $(this).parent('.content');
+        var fileName = gui.find('#name').text();
+
+        gui.removeClass('content').addClass('deleting');
+
+        $.ajax({
+            dataType: "json",
+            xhrFields: { withCredentials: true },
+            url: domain + "api/spiffs/delete",
+            data: "path=" + fileName,
+            type: "POST",
+            beforeSend: function() {
+                allowAjaxConnection = false;
+            },
+            success: function(data) {
+                if(data.status) {
+                    apiGetSPIFFS();
+                    //showAlert("Файл " + fileName + " успешно удален!", COLOR_ALERT_GRAY);
+                    //gui.remove();
+                } else showAlert("Ошибка удаления файла!");
+                allowAjaxConnection = true;
+            },
+            error: function() {
+                showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!");
+                allowAjaxConnection = true;
+            }
+        });
+    }
+
+    function apiGetSystemInfo() {
+        var dfr = $.Deferred();
+        $.ajax({
+            dataType: "json",
+            xhrFields: { withCredentials: true },
+            url: domain + "api/system/info",
+            type: "POST",
+            beforeSend: function() {
+                allowAjaxConnection = false;
+            },
+            success: function(data) {
+                $.each(data, function (name, val) {
+                    var search = "#sl-system #" + name;
+                    if(search.length) $(search).find("#formInput").text(name.match(/(freeHeap|realSize|sketchSize|freeSketchSpace)/i)? formatBytes(val, 2) : val);
+                });
+                allowAjaxConnection = true;
+                dfr.resolve();
+            },
+            error: function() {
+                showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!");
+                allowAjaxConnection = true;
+                dfr.reject();
+            }
+        });
+        return dfr.promise();
+    }
+
+    function apiGetI2CInfo() {
+        var i2cList = $('#sl-i2c #i2cList');
+        var i2cDesc = $('#sl-i2c #i2cDesc');
+
+        i2c = i2c || i2cList.html();
+
+        var description = {
+            '0x50' : 'EEPROM 24C32',
+            '0x3f' : 'lcd I2C ',
+            '0x68' : 'ds1307 RTC',
+            '0x23' : 'Датчик освещенности',
+            '0x5C' : 'Датчик освещенности',
+            '0x40' : 'Датчик влажности и температуры',
+            '0x77' : 'Датчик давления',
+            '0x27' : 'LCD дисплей',
+            '0x3F' : 'LCD дисплей',
+            '0x76' : 'Датчик давления с гигрометром',
+            '0x68' : 'Акселерометр и гироскоп',
+            '0x69' : 'Акселерометр и гироскоп',
+            '0x39' : 'Датчик жестов и RGB',
+            '0xE0' : 'Ультразвуковой датчик',
+            '0x44' : 'Датчик влажности и температуры',
+            '0x45' : 'Датчик влажности и температуры',
+            '0x5A' : 'ИК-датчик температуры'
+        };
+
+        i2cList.html("");
+        i2cDesc.html("Сканирование...");
+        $.ajax({
+            dataType: "json",
+            xhrFields: { withCredentials: true },
+            url: domain + "api/system/i2c",
+            type: "GET",
+            cache: false,
+            beforeSend: function() {
+                allowAjaxConnection = false;
+            },
+            success: function(device) {
+                if(device.count) {
+                    var content = '';
+                    i2cList.html(content);
+                    i2cDesc.html("Найденные устройства");
+                    $.each(device.list[0], function(hex, status){
+                        hex = "0x" + hex;
+                        content = i2c;
+                        content = content.replace(/{address}/g, hex);
+                        content = content.replace(/{description}/g, (status ? ((hex in description) ? description[hex] : "неизвестное устройство") : "ошибка"));
+                        i2cList.append(content);
+                    });
+                } else i2cDesc.html("Не найдено ни одного устройства");
+                allowAjaxConnection = true;
+            },
+            error: function() {
+                i2cDesc.html("Ошибка сканирования");
+                allowAjaxConnection = true;
+            }
+        });
+    }
+
+    var spiffsDropZone = $('#sl-spiffs #dropZone');
+    spiffsDropZone[0].ondragover = function() { $(this).addClass("hover").removeClass("default"); return false; };
+    spiffsDropZone[0].ondragleave = function() { $(this).addClass("default").removeClass("hover"); return false; };
+    spiffsDropZone[0].ondrop = function(event) {
+        event.preventDefault();
+
+        if(!allowAjaxConnection) {
+            $(this).addClass("error").removeClass("default").find("span").text("Соединение занято, попробуйте позже");
+            return false;
+        }
+
+        var file = event.dataTransfer.files[0];
+        if(file.size > spiffsFreeSize) {
+            $(this).addClass("error").removeClass("default").find("span").text("Слишком большой размер файла");
+            return false;
+        }
+
+        var fd = new FormData;
+        fd.append("file", file);
+        fd.append("name", "update");
+
+        $.ajax({
+            url: domain + "api/spiffs",
+            type: "POST",
+            data: fd,
+            cache: false,
+            contentType: false,
+            processData: false,
+            xhr: function() {
+                var xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
+                xhr.upload.onprogress = function(event) {
+                    var percent = (event.loaded/event.total*100).toFixed();
+                    spiffsDropZone.find("span").text((percent < 100) ? 'Загружено ' + percent + '%, дождитесь окончания процесса!' : 'Идет сохранение файла');
+                };
+                return xhr;
+            },
+            beforeSend: function() {
+                allowAjaxConnection = false;
+                spiffsDropZone.removeClass().addClass("default").find("span").text('Идет загрузка файла, пожалуйста подождите');
+            },
+            success: function(answer) {
+                var data = jQuery.parseJSON(answer);
+                if(data.status) {
+                    spiffsDropZone.removeClass().addClass("default").find("span").text('Загрузка успешно завершена');
+                    apiGetSPIFFS();
+                } else spiffsDropZone.addClass("error").removeClass("default").find("span").text("Во время загрузки произошла ошибка");
+                allowAjaxConnection = true;
+            },
+            error: function() {
+                spiffsDropZone.addClass("error").removeClass("default").find("span").text("Во время загрузки произошла ошибка");
+                allowAjaxConnection = true;
+            }
+        });
+        return false;
+    };
+
+    var firmwareDropZone = $('#sl-firmware #dropZone');
+    firmwareDropZone[0].ondragover = function() { $(this).addClass("hover").removeClass("default"); return false; };
+    firmwareDropZone[0].ondragleave = function() { $(this).addClass("default").removeClass("hover"); return false; };
+    firmwareDropZone[0].ondrop = function(event) {
+        event.preventDefault();
+
+        if(!allowAjaxConnection) {
+            $(this).addClass("error").removeClass("default").find("span").text("Соединение занято, попробуйте позже");
+            return false;
+        }
+
+        var file = event.dataTransfer.files[0];
+
+        if(file.size > 512 * 1024) {
+            $(this).addClass("error").removeClass("default").find("span").text("Слишком большой размер файла");
+            return false;
+        }
+
+        if(file.type !== "application/octet-stream") {
+            $(this).addClass("error").removeClass("default").find("span").text("Неверный формат файла");
+            return false;
+        }
+
+        getFileMD5(file).then(function(hash) {
+            var fd = new FormData;
+            fd.append("file", file, hash);
+            fd.append("name", "update");
+
+            $.ajax({
+                url: domain + "api/system/update",
+                type: "POST",
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                xhr: function() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+                    xhr.upload.onprogress = function(event) {
+                        var percent = (event.loaded/event.total*100).toFixed();
+                        firmwareDropZone.find("span").text((percent < 100) ? 'Загружено ' + percent + '%, дождитесь окончания процесса!' : 'Идет сохранение файла');
+                    };
+                    return xhr;
+                },
+                beforeSend: function() {
+                    allowAjaxConnection = false;
+                    firmwareDropZone.find("span").removeClass().addClass("default").find("span").text('Идет загрузка файла, пожалуйста подождите');
+                },
+                success: function(answer) {
+                    var data = jQuery.parseJSON(answer);
+                    if(data.status) {
+                        firmwareDropZone.removeClass().addClass("default").find("span").html('Загрузка успешно завершена<br>Страница будет автоматически перезагружена');
+                        setTimeout(function(){ window.location.reload(true); }, 10000);
+                    } else firmwareDropZone.addClass("error").removeClass("default").find("span").html("Во время загрузки произошла ошибка<br>" + updateErrorCode(data.error));
+                    allowAjaxConnection = true;
+                },
+                error: function() {
+                    firmwareDropZone.addClass("error").removeClass("default").find("span").text("Во время загрузки произошла ошибка");
+                    allowAjaxConnection = true;
+                }
+            });
+        });
+    };
+
+    function getFileMD5(file) {
+        var dfr = $.Deferred();
+        var hash = false;
+        if(('FileReader' in window) && ('MD5' in window)) {
+            var fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                if(file.size === e.target.result.length) hash = MD5.hashBinary(e.target.result);
+                else showAlert("ВНИМАНИЕ: Ошибка при расчете контрольной суммы прошивки", COLOR_ALERT_GRAY);
+                dfr.resolve(hash);
+            };
+            fileReader.onerror = function() {
+                showAlert("ВНИМАНИЕ: Ошибка при расчете контрольной суммы прошивки", COLOR_ALERT_GRAY);
+                dfr.resolve(hash);
+            };
+            fileReader.readAsBinaryString(file);
+        } else dfr.resolve(hash);
+        return dfr.promise();
+    }
+
+    function selfCheckSupportMD5() {
+        var error = Object.create(null);
+        if(!('FileReader' in window)) error[0] = "Ваш браузер не поддерживает работу с FileAPI";
+        if(!('MD5' in window)) error[1] = "С контроллера не удалось загрузить файл md5.js или он поврежден";
+        if(Object.keys(error).length) {
+            var message = "ВНИМАНИЕ: проверка целостности, загружаемой Вами прошивки, будет невозможна по следующим причинам:\n\n";
+            var i = 0;
+            for(key in error) message += (++i) + ": " + error[key] + "\n";
+            showAlert(message, COLOR_ALERT_GREEN);
+        }
+    }
+
+    function updateErrorCode(code) {
+        if (code === 0) return "No Error";
+        else if (code === 1) return "Flash Write Failed";
+        else if (code === 2) return "Flash Erase Failed";
+        else if (code === 3) return "Flash Read Failed";
+        else if (code === 4) return "Not Enough Space";
+        else if (code === 5) return "Bad Size Given";
+        else if (code === 6) return "Stream Read Timeout";
+        else if (code === 7) return "MD5 Check Failed";
+        else if (code === 8) return "Flash config wrong";
+        else if (code === 9) return "new Flash config wrong:";
+        else if (code === 10) return "Magic byte is wrong, not 0xE9";
+        else return "UNKNOWN";
+    }
+
+    function checkLogin(login) { return login.match(/^[a-z0-9_]{3,30}$/i); }
+    function checkPassw(passw) { return passw.match(/^.{3,30}$/); }
+    function checkSSID(ssid) { return ssid.match(/^[a-z0-9. -]{3,30}$/i); }
+    function checkHostAddr(host) { return host.match(/^((?!(0|127|255))((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|((([a-z0-9\-]{1,10}\.){1,3})?([a-z0-9\-]{2,26})\.)[a-z]{2,6})$/i); }
+    function checkMqttPath(path) { return path.match(/^[a-z0-9_/]{3,200}$/i); }
+    function checkNarodmonId(id) { return id.match(/^[A-Z0-9-:]{12,18}$/); }
+
+    $(".settings input[type='submit']").click(function() {
+        if(!allowAjaxConnection) {
+            showAlert("Соединение занято, попробуйте позже");
+            return false;
+        }
+
+        var error = Object.create(null);
+        var settings = Object.create(null);
+
+        $(".settings [id *= sl-]:visible").find(":input").each(function() {
+            var id = $(this).attr('id');
+            var val = $.trim($(this).val());
+            var notChange = '********';
+
+            // Home SSID
+            if('client_ssid' === id) {
+                if(val.length) {
+                    if(checkSSID(val)) settings[id] = val;
+                    else error[id] = 'Некорректный SSID домашней сети';
+                } else settings[id] = '';
+            }
+            // Home Password
+            else if('client_pass' === id) {
+                if(val.length) {
+                    if(notChange === val) return;
+                    if(checkPassw(val)) settings[id] = val;
+                    else error[id] = 'Некорректный пароль домашней сети';
+                } else settings[id] = '';
+            }
+            // ESP AP SSID
+            else if('softap_ssid' === id) {
+                if(val.length) {
+                    if(checkSSID(val)) settings[id] = val;
+                    else error[id] = 'Некорректный SSID ESP8266 в режиме AP';
+                } else settings[id] = '';
+            }
+            // ESP AP Password
+            else if('softap_pass' === id) {
+                if(val.length) {
+                    if(notChange === val) return;
+                    if(checkPassw(val)) {
+                        if(val === $("input[id='" + id + "_repeat']").val()) settings[id] = val;
+                        else error[id] = 'Пароль ESP8266 в режиме AP не подтвержден';
+                    } else error[id] = 'Некорректный пароль ESP8266 в режиме AP';
+                } else settings[id] = '';
+            }
+            // Admin Password
+            else if('admin_pass' === id) {
+                if(val.length) {
+                    if(notChange === val) return;
+                    if(checkPassw(val)) {
+                        if(val === $("input[id='" + id + "_repeat']").val()) settings[id] = val;
+                        else error[id] = 'Пароль Администратора не подтвержден';
+                    } else error[id] = 'Некорректный пароль Администратора';
+                } else settings[id] = '';
+            }
+            // MQTT Server
+            else if('mqtt_server' === id) {
+                if(val.length) {
+                    if(checkHostAddr(val)) settings[id] = val;
+                    else error[id] = 'Некорректный адрес MQTT сервера';
+                } else settings[id] = '';
+            }
+            // MQTT Login
+            else if('mqtt_login' === id) {
+                if(val.length) {
+                    if(checkLogin(val)) settings[id] = val;
+                    else error[id] = 'Некорректное имя пользователя MQTT';
+                } else settings[id] = '';
+            }
+            // MQTT Password
+            else if('mqtt_pass' === id) {
+                if(val.length) {
+                    if(notChange === val) return;
+                    if(checkPassw(val)) settings[id] = val;
+                    else error[id] = 'Некорректный пароль пользователя MQTT';
+                } else settings[id] = '';
+            }
+            // MQTT Path
+            else if('mqtt_path' === id) {
+                if(val.length) {
+                    if(checkMqttPath(val)) settings[id] = val;
+                    else error[id] = 'Некорректный корневой путь для отправки данных на MQTT сервер';
+                } else settings[id] = '';
+            }
+            // Narodmon id
+            else if('narodmon_id' === id) {
+                if(val.length) {
+                    if(checkNarodmonId(val)) settings[id] = val;
+                    else error[id] = 'Некорректный идентификатор устройства';
+                } else settings[id] = '';
+            }
+        });
+
+        if(Object.keys(error).length) {
+            var message = "ВНИМАНИЕ: настройки не сохранены по следующим причинам:\n\n";
+            var i = 0;
+            for(key in error) message += (++i) + ": " + error[key] + "\n";
+            showAlert(message);
+        }
+        else {
+            if(Object.keys(settings).length) {
+                var button = $(".settings input[type='submit']");
+                $.ajax({
+                    dataType: "json",
+                    xhrFields: { withCredentials: true },
+                    url: domain + "api/settings",
+                    type: "POST",
+                    data: "save=" + JSON.stringify(settings),
+                    cache: false,
+                    beforeSend:function() {
+                        button.hide();
+                    },
+                    success:function(data) {
+                        if(!data.status) showAlert("Отказано в доступе!");
+                        else showAlert("Настройки успешно сохранены!", COLOR_ALERT_GRAY);
+                        button.show();
+                    },
+                    error:function() {
+                        showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!");
+                        button.show();
+                    }
+                });
+            }
+        }
+    });
+
+    function fillSettingsForm(data) {
+        var label = "********";
+        $.each(data, function (name, val) {
+            var search = ".settings input#" + name;
+            if(name.match(/pass$/)) {
+                if(val.length) {
+                    $(search).val(label);
+                    var repeat = $(search + "_repeat");
+                    if(repeat.length) repeat.val(label);
+                }
+            } else $(search).val(val);
+        });
+    }
+
+    $(".authorized input[type='submit']").click(function() {
+        var login = $(".authorized input[type='login']");
+        var password = $(".authorized input[type='password']");
+
+        if(checkLogin(login.val()) && checkPassw(password.val())) {
+            $.ajax({
+                dataType: "json",
+                url: domain + "api/settings",
+                type: "POST",
+                data: "login=" + login.val() + "&password=" + password.val(),
+                cache: false,
+                success:function(data) {
+                    if(data.status) {
+                        fillSettingsForm(data);
+                        $(".authorized").hide();
+                        $(".shadow").show();
+                        $(".settings").show();
+                    }
+                    else {
+                        $("div.authorized input:not([type='submit'])").val("");
+                        showAlert("Отказано в доступе!");
+                    }
+                },
+                error:function() { showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!"); }
+            });
+        } else showAlert("Ошибка авторизации\nПроверьте правильность вводимых данных!");
+    });
+
+    $("img#graph").click(function() {
+        if(!allowAjaxConnection) {
+            showAlert("Соединение занято, попробуйте позже", COLOR_ALERT_GRAY);
+            return false;
+        }
+        $.ajax({
+            dataType: "json",
+            url: domain + "api/sensors/log",
+            type: "GET",
+            cache: false,
+            beforeSend:function() {
+                $(".loading").show();
+                allowAjaxConnection = false;
+            },
+            success: function(obj) {
+                var points = 144;   // Общее количество точек
+                var pointStart = new Date().getTime() - obj.timeAdjustment - (points - 1) * 10 * 60 * 1000;   // Начальная точка сутки назад
+                var pointInterval = 600 * 1000; // Интервал между точками 10 минут
+                var animation = !$("div.graph").is(":visible");
+
+                graph.series[0].update({
+                    animation: animation,
+                    data: obj.humidity,
+                    pointStart: pointStart,
+                    pointInterval: pointInterval
+                }, false);
+                graph.series[1].update({
+                    animation: animation,
+                    data: obj.temperature,
+                    pointStart: pointStart,
+                    pointInterval: pointInterval
+                }, false);
+                graph.series[2].update({
+                    animation: animation,
+                    data: obj.carbdiox,
+                    pointStart: pointStart,
+                    pointInterval: pointInterval
+                }, false);
+                graph.series[3].update({
+                    animation: animation,
+                    data: obj.pressure,
+                    pointStart: pointStart,
+                    pointInterval: pointInterval
+                }, false);
+
+                if($(".graph").is(":hidden")) {
+                    $(".shadow").show();
+                    $(".graph").show();
+                }
+                graph.redraw();
+                $(".loading").fadeOut(2000);
+                allowAjaxConnection = true;
+            },
+            error: function() {
+                showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!");
+                $(".loading").fadeOut(2000);
+                allowAjaxConnection = true;
+            }
+        });
+    });
+
+    $("img#settings").click(function() {
+        if(!allowAjaxConnection) {
+            showAlert("Соединение занято, попробуйте позже", COLOR_ALERT_GRAY);
+            return false;
+        }
+        $(".loading").show();
+        $.ajax({
+            dataType: "json",
+            url: domain + "api/settings",
+            type: "POST",
+            cache: false,
+            beforeSend:function() {
+                allowAjaxConnection = false;
+            },
+            success:function(data) {
+                if(data.status) {
+                    fillSettingsForm(data);
+                    $(".shadow").show();
+                    $(".settings").show();
+                }
+                else {
+                    $(".shadow").show();
+                    $(".authorized input:not([type='submit'])").val("");
+                    $(".authorized").show();
+                }
+                $(".loading").fadeOut(2000);
+                allowAjaxConnection = true;
+            },
+            error:function() {
+                showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!");
+                $(".loading").fadeOut(2000);
+                allowAjaxConnection = true;
+            }
+        });
+    });
+
+    $("div.settings div.menuList").click(function() {
+        var id = $(this).attr("id");
+        $(".settings .menuList[id != " + id + "]").hide();
+        $(".settings .menuList#" + id).css({"cursor": "default"});
+        $(".settings #sl-" + id).show();
+        if(id.match(/(global|mqtt|narodmon)/i)) $("div.settings input[type='submit']").show();
+        else if(id === "firmware") selfCheckSupportMD5();
+        else if(id === "spiffs") apiGetSPIFFS();
+        else if(id === "system") apiGetSystemInfo();
+        else if(id === "i2c") apiGetI2CInfo();
+
+
+    });
+
+    $(".settings img.close").click(function() {
+        if($(".settings .menuList:hidden").length) {
+            $(".settings [id *= sl-]").hide();
+            $(".settings .menuList:visible").css({"cursor": "pointer"});
+            $(".settings .menuList:hidden").show();
+            $(".settings input[type='submit']").hide();
+        }
+        else {
+            $(".shadow").hide();
+            $(".settings").hide();
+        }
+    });
+
+    $("#sl-narodmon #use_mac_address").click(function() {
+        apiGetSystemInfo().done(function(){
+            $("#sl-narodmon input[id='narodmon_id']").val($("#sl-system #mac #formInput").text());
+            //$("div.settings input[type='submit']").click();
+        }).fail(function(){
+            showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!");
+        });
+    });
+
+    $(".authorized img.close").click(function() {
+        $(".authorized").hide();
+        $(".shadow").hide();
+    });
+
+    $(".graph img.close").click(function() {
+        $(".shadow").hide();
+        $(".graph").hide();
+    });
+
+
+    $(".alert img.close").click(function() {
+        $(".alert").hide();
+    });
+
+    $(".graph img.update").click(function() {
+        $("img#graph").click();
+    });
+
+    $("#sl-system #formInput").click(function(){
+        //alert($(this).parent('.content').attr('id'));
+        //.on("focus", function() { document.execCommand('selectAll',false,null) }).focus();
+        $(this).select().on("focus", function() { document.execCommand('selectAll',false,null) }).focus();
+        document.execCommand('copy');
+    });
+
+    function hardControl(event) {
+        if(confirm(event.data.alert)) {
+            $.ajax({
+                xhrFields: { withCredentials: true },
+                dataType: "json",
+                url: domain + event.data.url,
+                type: "POST",
+                beforeSend: function() {
+                    allowAjaxConnection = false;
+                },
+                success: function(data) {
+                    if(data.status) {
+                        $(".settings [id *= sl-]").hide();
+                        $(".settings .menuList:visible").css({"cursor": "pointer"});
+                        $(".settings .menuList:hidden").show();
+                        $(".settings").hide();
+                        $(".shadow").hide();
+                    }
+                    allowAjaxConnection = true;
+                },
+                error: function() {
+                    showAlert("Во время выполнения запроса произошла ошибка.\nНет связи с устройством!");
+                    allowAjaxConnection = true;
+                }
+            });
+        }
+    }
+    $("#reboot").click({url: "api/system/reboot", alert: "Перезагрузка контроллера приведет к обнулению всех счетчиков, таймеров и журналов! Продолжить?"}, hardControl);
+    $("#hardReset").click({url: "api/system/hardReset", alert: "Текущая конфигурация устройства будет удалена. Продолжить?"}, hardControl);
+
+    $(window).keydown(function(event) {
+        if(event.which === 27) {
+            if($(".alert").is(":visible")) { $(".alert img.close").click(); return false; }
+            if($(".authorized").is(":visible")) $(".authorized img.close").click();
+            if($(".settings").is(":visible")) $(".settings img.close").click();
+            if($(".graph").is(":visible")) $(".graph img.close").click();
+        }
+        else if(event.which === 13) {
+            if($(".alert").is(":visible")) { $(".alert img.close").click(); return false; }
+            if($(".authorized").is(":visible")) $(".authorized input[type='submit']").click();
+            if($(".settings input[type='submit']").is(":visible") && $(".alert").is(":hidden")) $(".settings input[type='submit']").click();
+        }
+        else if(event.which === 192) {
+            // test
+        }
+    });
+
+    $(window).load(function() {
+
+    });
+
+    $(document).ready(function() {
+        $(".sensorsContent").fadeIn(2000);
+        $(".loading").css("top", "5px");
+        chenge();
+        chart();
+        setTimeout(loadSky, 1500);
+    });
+
+    function showAlert(text, color) {
+        $(".alert").css({"background-color": color || COLOR_ALERT_RED});
+        $(".alert .message .text").html(text);
+        $(".alert").show();
+    }
+
+    function shadow() {
+        $('.shadow').css({height: $(window).height() + 400, top: $(window).scrollTop() - 200});
+        $('.alert').css({height: $(window).height() + 400, top: $(window).scrollTop() - 200});
+    }
+
+    function chart() {
+        Highcharts.theme = {
+            chart: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)'
+            }
+        };
+        Highcharts.setOptions(Highcharts.theme);
+
+        Highcharts.setOptions({
+            lang: {
+                shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',  'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',  'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+            }
+        });
+
+        Highcharts.setOptions({
+            global: { useUTC: false }
+        });
+
+        graph = Highcharts.chart('graph24h', {
+            chart: { zoomType: 'x' },
+            title: { text: 'Домашняя метеостанция' },
+            subtitle: { text: 'Показания за последние сутки' },
+            xAxis: [{
+                type: 'datetime',
+                tickPixelInterval: 50
+            }],
+            yAxis: [{
+                labels: {
+                    format: '{value} °C',
+                    style: { color: '#6e6e6e' }
+                },
+                title: {
+                    text: null, //'Температура',
+                    style: { color: '#6e6e6e' }
+                }
+            }, {
+                gridLineWidth: 0,
+                title: {
+                    text: null, //'Влажность',
+                    style: { color: '#7cb5ec' }
+                },
+                labels: {
+                    format: '{value} %',
+                    style: { color: '#7cb5ec' }
+                }
+            }, {
+                gridLineWidth: 0,
+                title: {
+                    text: null, //'Освещенность',
+                    style: { color: '#f7a35c' }
+                },
+                labels: {
+                    formatter: function () { return (this.value / 1000) + 'k lx'; },
+                    style: { color: '#f7a35c' }
+                },
+                opposite: true
+            }, {
+                gridLineWidth: 0,
+                title: {
+                    text: null, //'Давление',
+                    style: { color: '#14c400' }
+                },
+                labels: {
+                    format: '{value} mm',
+                    style: { color: '#14c400' }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                borderWidth: 0,
+                backgroundColor: 'rgba(219,219,216,0.8)',
+                shadow: false,
+                shared: true,
+                crosshairs: true
+            },
+            legend: {
+                itemStyle: {
+                    fontWeight: 'bold',
+                    fontSize: '13px'
+                }
+            },
+            series: [{
+                name: 'Влажность',
+                type: 'area',
+                yAxis: 1,
+                tooltip: { valueSuffix: ' %' },
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, "#7cb5ec"],
+                        [1, Highcharts.Color("#7cb5ec").setOpacity(0).get('rgba')]
+                    ]
+                },
+                marker: {
+                    enabled: false
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+
+                color: '#7cb5ec'
+            }, {
+                name: 'Температура',
+                type: 'spline',
+                yAxis: 0,
+                tooltip: { valueSuffix: ' °C' },
+                marker: { enabled: false },
+                lineWidth: 1,
+                color: '#6e6e6e'
+            }, {
+                name: 'Освещенность',
+                type: 'spline',
+                yAxis: 2,
+                tooltip: { valueSuffix: ' lx' },
+                marker: {
+                    lineWidth: 1,
+                    lineColor: '#f7a35c',
+                    fillColor: 'white',
+                    radius: 2
+                },
+                //dashStyle: 'shortdot',
+                lineWidth: 1,
+                color: '#f7a35c'
+            }, {
+                name: 'Давление',
+                type: 'spline',
+                yAxis: 3,
+                tooltip: { valueSuffix: ' mm' },
+                marker: { enabled: false },
+                //dashStyle: 'shortdot',
+                lineWidth: 1,
+                color: '#30b402'
+            }]
+        });
+    }
+    $(window).scroll(shadow).resize(shadow);
+</script>
+</html>
