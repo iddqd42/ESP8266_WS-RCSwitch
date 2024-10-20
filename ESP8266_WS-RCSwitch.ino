@@ -48,7 +48,7 @@ config config;
 #include <DHT_U.h>
 
 #define DHTPIN            12         // Pin which is connected to the DHT sensor.
-//#define DHTTYPE           DHT11     // DHT 11 
+//#define DHTTYPE           DHT11     // DHT 11
 #define DHTTYPE           DHT22     // DHT 22 (AM2302)
 //#define DHTTYPE           DHT21     // DHT 21 (AM2301)
 DHT dht(DHTPIN, DHTTYPE);
@@ -60,7 +60,7 @@ DHT dht(DHTPIN, DHTTYPE);
 Adafruit_BMP085 BMP085;
 
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x3F,20,4);  // Устанавливаем дисплей
+LiquidCrystal_I2C lcd(0x3F, 20, 4); // Устанавливаем дисплей
 
 #include "uRTCLib.h"
 uRTCLib rtc;
@@ -71,11 +71,11 @@ uRTCLib rtc;
 unsigned int  localPort = 2390;      // local port to listen for UDP packets
 unsigned long ntp_time = 0;
 
-IPAddress timeServerIP; 
+IPAddress timeServerIP;
 const char* ntpServerName = "ntp1.vniiftri.ru";
 
-const int NTP_PACKET_SIZE = 48; 
-byte packetBuffer[ NTP_PACKET_SIZE]; 
+const int NTP_PACKET_SIZE = 48;
+byte packetBuffer[ NTP_PACKET_SIZE];
 WiFiUDP udp;
 
 
@@ -123,14 +123,14 @@ RCSwitch ExtSensor = RCSwitch();
 #define printByte(args)  print (args,BYTE);
 #endif
 //Создаем массив значений на дисплее, от пустого к полному.
-          uint8_t graf0[ 8 ] = { 0x1F , 0x1F , 0x1F , 0x1F , 0x1F , 0x1F , 0x1F };
-          uint8_t graf1[ 8 ] = {B00000, B11111, B11111, B11111, B11111, B11111, B11111};
-          uint8_t graf2[ 8 ] = {B00000, B00000, B11111, B11111, B11111, B11111, B11111};
-          uint8_t graf3[ 8 ] = {B00000, B00000, B00000, B11111, B11111, B11111, B11111};
-          uint8_t graf4[ 8 ] = {B00000, B00000, B00000, B00000, B11111, B11111, B11111};
-          uint8_t graf5[ 8 ] = {B00000, B00000, B00000, B00000, B00000, B11111, B11111};
-          uint8_t graf6[ 8 ] = {B00000, B00000, B00000, B00000, B00000, B00000, B11111};
-          uint8_t graf7[ 8 ] = {B00000, B00000, B00000, B00000, B00000, B00000, B00000};
+uint8_t graf0[ 8 ] = { 0x1F , 0x1F , 0x1F , 0x1F , 0x1F , 0x1F , 0x1F };
+uint8_t graf1[ 8 ] = {B00000, B11111, B11111, B11111, B11111, B11111, B11111};
+uint8_t graf2[ 8 ] = {B00000, B00000, B11111, B11111, B11111, B11111, B11111};
+uint8_t graf3[ 8 ] = {B00000, B00000, B00000, B11111, B11111, B11111, B11111};
+uint8_t graf4[ 8 ] = {B00000, B00000, B00000, B00000, B11111, B11111, B11111};
+uint8_t graf5[ 8 ] = {B00000, B00000, B00000, B00000, B00000, B11111, B11111};
+uint8_t graf6[ 8 ] = {B00000, B00000, B00000, B00000, B00000, B00000, B11111};
+uint8_t graf7[ 8 ] = {B00000, B00000, B00000, B00000, B00000, B00000, B00000};
 //Добавили символы для графиков
 
 int stat[ 2 ][ 25 ]; //Возьмем 2х мерный массив, где один массив время (контроль действительности значения) и второй массив наши данные
@@ -253,8 +253,8 @@ ADC_MODE(ADC_VCC);
 */
 void setup() {
 
-  
-//stat[ 1 ][ 17 ] = -1;
+
+  //stat[ 1 ][ 17 ] = -1;
 
   /*
     Для теста
@@ -295,11 +295,11 @@ void setup() {
      BH1750, SI7021, BMP085
   */
   pinMode(button1B, INPUT_PULLUP);
-//  gpio.mode(5,gpio.INPUT,gpio.PULLUP)
+  //  gpio.mode(5,gpio.INPUT,gpio.PULLUP)
   nextTimeBut = millis() + 120000;
   nextTimeNTP = millis() + 600000;
-  
-  lcd.init();                     
+
+  lcd.init();
   lcd.backlight();// Включаем подсветку дисплея
   lcd.print("iT4iT.CLUB");
   lcd.setCursor(7, 1);
@@ -326,20 +326,20 @@ void setup() {
   ExtSensor.enableReceive(14);
 
 
-   Serial.println("Starting UDP");
-   udp.begin(localPort);
-   Serial.print("Local port: ");
-   Serial.println(udp.localPort());
+  Serial.println("Starting UDP");
+  udp.begin(localPort);
+  Serial.print("Local port: ");
+  Serial.println(udp.localPort());
 
 
-  
+
   //light.status = true;
   dht.begin();
   temperature.status = humidity.status = true;
   pressure.status = BMP085.begin();
 
   co2Serial.begin(9600); //Init sensor MH-Z19(14)
-  
+
   /*
      File system object (SPIFFS)
      https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md#file-system-object-spiffs
@@ -510,11 +510,11 @@ bool modeClient() {
 
   webServer.begin();
 
-  if((dnsClient = MDNS.begin(dnsClientName)) == true) {
+  if ((dnsClient = MDNS.begin(dnsClientName)) == true) {
     MDNS.addService("http", "tcp", 80);
     timerDnsUpdate = millis();
   }
-  
+
   modeWiFi = client;
   status.current = 1;
   lcd.setCursor(18, 1);
@@ -544,7 +544,7 @@ bool modeAP() {
   status.current = 2;
   lcd.setCursor(18, 1);
   lcd.print("AP");
-   if(dnsClient) {
+  if (dnsClient) {
     dnsClient = false;
     timerDnsUpdate = 0;
   }
@@ -558,7 +558,7 @@ bool modeAP() {
 void web_api_system_update() {
   webServer.sendHeader("Connection", "close");
   if (authorized()) {
-    if(!Update.hasError()) {
+    if (!Update.hasError()) {
       webServer.sendHeader("Set-Cookie", cookiesName + "=0; Path=/; Expires=Thu, 02 Apr 1987 00:00:01 GMT");
       webServer.send(200, "text/plain", "{\"status\":true}");
       ESP.restart();
@@ -612,21 +612,21 @@ void loop() {
 
   lcdbacklight();
 
-   if (millis() - nextTimeRTC > 250 or nextTimeRTC > millis()) {
-        ShowTime();
-        nextTimeRTC = millis();
-      }
+  if (millis() - nextTimeRTC > 250 or nextTimeRTC > millis()) {
+    ShowTime();
+    nextTimeRTC = millis();
+  }
 
-  if (modeWiFi == client){
+  if (modeWiFi == client) {
     if (nextTimeNTP <= millis()) {
-        if( GetNTP() ){
-          UpdateTime();
-          nextTimeNTP = millis() + 43200000;
-          }
+      if ( GetNTP() ) {
+        UpdateTime();
+        nextTimeNTP = millis() + 43200000;
       }
     }
+  }
 
-  
+
   if (ota) ArduinoOTA.handle();
   // Сбрасываем псевдо сторожевой таймер
   hangTestReset();
@@ -693,8 +693,10 @@ void loop() {
     // Отправка данных на ресурс narodmon.ru с интервалом 10 минут
     if (config.narodmon_id.length()) {
       if (millis() - timerNarodmon > 600000 or timerNarodmon > millis()) {
+        Serial.println("narodmon try");
         HTTPClient httpClient;
         String query;
+        
         //query += "&L1=" + String(light.data);
         query += "&T1=" + String(temperature.data);
         query += "&H1=" + String(humidity.data);
@@ -703,12 +705,14 @@ void loop() {
         query += "&H2=" + String(humidityExt.data);
         query += "&C1=" + String(carbdiox.data);
         query += "&B1=" + String(batteryExt.data);
-        httpClient.begin("narodmon.ru", 80, "/get?ID=" + config.narodmon_id + query + "&NAME=ESP8266 (iT4iT.CLUB)");
+        httpClient.begin("narodmon.ru", 80, "/get?ID=" + config.narodmon_id + query + "&NAME=ESP8266 Meteo");
         httpClient.setUserAgent("weather station (ESP8266) iT4iT.CLUB");
         httpClient.setTimeout(5000);
         httpClient.GET();
         httpClient.end();
         timerNarodmon = millis();
+        Serial.println("/get?ID=" + config.narodmon_id + query + "&NAME=ESP8266 Meteo");
+        Serial.println("narodmon ok");
       }
     }
     // Отправка данный на MQTT сервер с интервалом 5 минут
@@ -741,15 +745,16 @@ void loop() {
 
 */
 /*
- Прием данных с внешнего датчика
+  Прием данных с внешнего датчика
 */
-void CheckExtSens(){
-  
+void CheckExtSens() {
+
   if (ExtSensor.available()) {
-    
+    Serial.println("433 receive");
+
     unsigned  long msg = 1000000000;
     msg = ExtSensor.getReceivedValue();
-    
+
     if (msg == 0) {
       Serial.print("Unknown encoding");
     } else {
@@ -761,27 +766,27 @@ void CheckExtSens(){
       Serial.print("Protocol: ");
       Serial.println( ExtSensor.getReceivedProtocol() );
 
-      if ( (ExtSensor.getReceivedProtocol() == 2) && (msg/1000000000 == 1) )
-       {
-      int chs = 99;
-      int battery = 0;
-//        msg = ExtSensor.getReceivedValue();
-      temext = ((msg % 10000000) / 10000) - 400;
-      humext = (msg % 1000000000) / 10000000;
-      batext = (msg % 10000)/10;
-        
+      if ( (ExtSensor.getReceivedProtocol() == 2) && (msg / 1000000000 == 1) )
+      {
+        int chs = 99;
+        int battery = 0;
+        //        msg = ExtSensor.getReceivedValue();
+        temext = ((msg % 10000000) / 10000) - 400;
+        humext = ((msg % 1000000000) / 10000000) - random(3);
+        batext = (msg % 10000) / 10;
+
         battery = map(batext, 320, 395, 0, 9);
-        battery = constrain(battery, 0, 9); 
+        battery = constrain(battery, 0, 9);
 
         batext = batext * 10;
         batext = constrain(batext, 0, 9999);
 
         chs = (msg / 1000000000) + ((msg % 1000000000) / 100000000) + ((msg % 100000000) / 10000000) + ((msg % 10000000) / 1000000) + ((msg % 1000000) / 100000) + ((msg % 100000) / 10000) + ((msg % 10000) / 1000) + ((msg % 1000) / 100) + ((msg % 100) / 10);
-         if (chs > 9 ) chs = (chs / 10) + (chs % 10);
-          if (chs > 9 ) chs = (chs / 10) + (chs % 10);
-    
-//      chs = msg % 10;
-      
+        if (chs > 9 ) chs = (chs / 10) + (chs % 10);
+        if (chs > 9 ) chs = (chs / 10) + (chs % 10);
+
+        //      chs = msg % 10;
+
         Serial.print("msg ");
         Serial.print( msg );
         Serial.print(" t ");
@@ -793,61 +798,77 @@ void CheckExtSens(){
         Serial.print(" battery ");
         Serial.print( battery );
         Serial.println(  );
-        
-       lcd.setCursor(0,2); 
-       lcd.print("           ");
-       lcd.setCursor(0,2); 
-       if (humext < 10) lcd.print(" ");
-       lcd.print(humext); 
-       lcd.print("%");
-     
-       lcd.setCursor(4,2); 
-         if (temext < 100 && temext >= 0)
+
+        lcd.setCursor(0, 2);
+        lcd.print("           ");
+        lcd.setCursor(0, 2);
+        if (humext < 10) lcd.print(" ");
+        lcd.print(humext);
+        lcd.print("%");
+
+        lcd.setCursor(4, 2);
+        if (temext < 100 && temext >= 0)
           lcd.print("  ");
-          else if (temext >= 100 ) 
+        else if (temext >= 100 )
           lcd.print(" ");
-          else if (temext < 0 && temext > -100)
-          lcd.print(" ");       
-       lcd.print( temext/10.0 , 1 );
-       lcd.print("\xDF");
-     
-//     if ( chs == 77 )        // 2 последних символа в датчика
-//       lcd.print(" + ");
-//       else lcd.print(" - ");
+        else if (temext < 0 && temext > -100)
+          lcd.print(" ");
+        lcd.print( temext / 10.0 , 1 );
+        lcd.print("\xDF");
 
-      lcd.setCursor(16, 2);
-      if      (battery > 8)    { lcd.printByte( 0 );}
-      else if (battery > 7)    { lcd.printByte( 1 );}
-      else if (battery > 6)    { lcd.printByte( 2 );}
-      else if (battery > 5)    { lcd.printByte( 3 );}
-      else if (battery > 4)    { lcd.printByte( 4 );}
-      else if (battery > 3)    { lcd.printByte( 5 );}
-      else if (battery > 2)    { lcd.printByte( 6 );}
-      else    { lcd.print("\xDB");}
+        //     if ( chs == 77 )        // 2 последних символа в датчика
+        //       lcd.print(" + ");
+        //       else lcd.print(" - ");
 
-      
-        
-         if (chs == (msg % 10)) 
-          { 
-            chs_s = 1;
-          }
-         else 
-           {
-            chs_s = 0;
-            Serial.print(" Chs INCOR ");
-           }
-        
-       }
-      
+        lcd.setCursor(16, 2);
+        if      (battery > 8)    {
+          lcd.printByte( 0 );
+        }
+        else if (battery > 7)    {
+          lcd.printByte( 1 );
+        }
+        else if (battery > 6)    {
+          lcd.printByte( 2 );
+        }
+        else if (battery > 5)    {
+          lcd.printByte( 3 );
+        }
+        else if (battery > 4)    {
+          lcd.printByte( 4 );
+        }
+        else if (battery > 3)    {
+          lcd.printByte( 5 );
+        }
+        else if (battery > 2)    {
+          lcd.printByte( 6 );
+        }
+        else    {
+          lcd.print("\xDB");
+        }
 
-/*     else if ( (ExtSensor.getReceivedProtocol() == 2) && ((msg / 1000000000) == 2) )
-      {
-//        msg = ExtSensor.getReceivedValue();
-        batext = (msg % 1000000000) / 100000;
+
+
+        if (chs == (msg % 10))
+        {
+          chs_s = 1;
+        }
+        else
+        {
+          chs_s = 0;
+          Serial.print(" Chs INCOR ");
+        }
+
       }
-      
-     else {Serial.println( "Wrong ReceivedProtocol" );}
-    */
+
+
+      /*     else if ( (ExtSensor.getReceivedProtocol() == 2) && ((msg / 1000000000) == 2) )
+            {
+        //        msg = ExtSensor.getReceivedValue();
+              batext = (msg % 1000000000) / 100000;
+            }
+
+           else {Serial.println( "Wrong ReceivedProtocol" );}
+      */
     }
 
     ExtSensor.resetAvailable();
@@ -856,7 +877,7 @@ void CheckExtSens(){
 
 
 /*
- Считывание данныз СО2
+  Считывание данныз СО2
 */
 int readCO2()
 {
@@ -864,45 +885,70 @@ int readCO2()
   byte cmd[9] = {0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
   // command to ask for data
   char response[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // for answer
-  
 
-  for (int z=0; z<9; z++)
+
+  for (int z = 0; z < 9; z++)
   {
-//    Serial.write(response[z]);
-    Serial.print(response[z],HEX);
+    //    Serial.write(response[z]);
+    Serial.print(response[z], HEX);
     Serial.print("-");
-    }
+  }
   Serial.println();
 
 
   co2Serial.write(cmd, 9); //request PPM CO2
   co2Serial.readBytes(response, 9);
 
-  for (int z=0; z<9; z++)
+  for (int z = 0; z < 9; z++)
   {
-    Serial.print(response[z],HEX);
+    Serial.print(response[z], HEX);
     Serial.print("-");
-    }
+  }
   Serial.println();
 
 
-   if (response[0] == 0x00)
+  if (response[0] == 0x00)
   {
     Serial.println("No co2 sensor!");
     return -1;
   }
-  
+
   if (response[0] != 0xFF)
   {
-    Serial.println("Wrong starting byte from co2 sensor!");
-    co2err++;
-    if (co2err > 3)
+    if (response[1] != 0xFF)
+    {
+      Serial.println("Wrong starting byte from co2 sensor!");
+      co2err++;
+      if (co2err > 12)     //co2err > 3 --  так надо
       {
-      lcd.clear();
-      lcd.setCursor(6, 0);
-      lcd.print("RESTART");
-      ESP.restart();
+        lcd.clear();
+        lcd.setCursor(6, 0);
+        lcd.print("RESTART (co2)");
+        delay(1000);
+        ESP.restart();
       }
+      return -1;
+    }
+    else
+    { if (response[2] != 0x86)
+      {
+        Serial.println("Wrong command from co2 sensor!");
+        co2err++;
+        if (co2err > 3)
+        {
+          lcd.clear();
+          lcd.setCursor(6, 0);
+          lcd.print("RESTART");
+          ESP.restart();
+        }
+        return -1;
+      }
+      int responseHigh = (int) response[3];
+      int responseLow = (int) response[4];
+      int ppm = (256 * responseHigh) + responseLow;
+      co2err = 0;
+      return ppm;
+    }
     return -1;
   }
 
@@ -911,12 +957,12 @@ int readCO2()
     Serial.println("Wrong command from co2 sensor!");
     co2err++;
     if (co2err > 3)
-      {
+    {
       lcd.clear();
       lcd.setCursor(6, 0);
       lcd.print("RESTART");
       ESP.restart();
-      }
+    }
     return -1;
   }
 
@@ -930,39 +976,39 @@ int readCO2()
 
 
 /**
- * Выдача текущего NTP времени в серийный порт и обновление в RTC
- */
-void UpdateTime(void){
+   Выдача текущего NTP времени в серийный порт и обновление в RTC
+*/
+void UpdateTime(void) {
 
   time_t t = ntp_time;
-   Serial.print("Weekday: ");
-   Serial.println(weekday(t));
-   Serial.print("Time: ");
-   Serial.print(hour(t));
-   Serial.print(":");
-   Serial.print(minute(t));
-   Serial.print(":");
-   Serial.print(second(t));
-   Serial.print(" Date: ");
-   Serial.print(day(t));
-   Serial.print("-");
-   Serial.print(month(t));
-   Serial.print("-");
-   Serial.println(year(t));
+  Serial.print("Weekday: ");
+  Serial.println(weekday(t));
+  Serial.print("Time: ");
+  Serial.print(hour(t));
+  Serial.print(":");
+  Serial.print(minute(t));
+  Serial.print(":");
+  Serial.print(second(t));
+  Serial.print(" Date: ");
+  Serial.print(day(t));
+  Serial.print("-");
+  Serial.print(month(t));
+  Serial.print("-");
+  Serial.println(year(t));
 
-    rtc.set(second(t), minute(t), hour(t), weekday(t), day(t), month(t), year(t)-2000);
-//  RTCLib::set(byte second, byte minute, byte hour, byte dayOfWeek, byte dayOfMonth, byte month, byte year)
+  rtc.set(second(t), minute(t), hour(t), weekday(t), day(t), month(t), year(t) - 2000);
+  //  RTCLib::set(byte second, byte minute, byte hour, byte dayOfWeek, byte dayOfMonth, byte month, byte year)
 }
 
 
 /**
- * Посылаем и парсим запрос к NTP серверу
- */
+   Посылаем и парсим запрос к NTP серверу
+*/
 bool GetNTP(void) {
-  WiFi.hostByName(ntpServerName, timeServerIP); 
-  sendNTPpacket(timeServerIP); 
+  WiFi.hostByName(ntpServerName, timeServerIP);
+  sendNTPpacket(timeServerIP);
   delay(1000);
-  
+
   int cb = udp.parsePacket();
   if (!cb) {
     Serial.println("No packet yet");
@@ -971,19 +1017,19 @@ bool GetNTP(void) {
   else {
     Serial.print("packet received, length=");
     Serial.println(cb);
-// Читаем пакет в буфер    
-    udp.read(packetBuffer, NTP_PACKET_SIZE); 
-// 4 байта начиная с 40-го сождержат таймстамп времени - число секунд 
-// от 01.01.1900   
+    // Читаем пакет в буфер
+    udp.read(packetBuffer, NTP_PACKET_SIZE);
+    // 4 байта начиная с 40-го сождержат таймстамп времени - число секунд
+    // от 01.01.1900
     unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
     unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
-// Конвертируем два слова в переменную long
+    // Конвертируем два слова в переменную long
     unsigned long secsSince1900 = highWord << 16 | lowWord;
-// Конвертируем в UNIX-таймстамп (число секунд от 01.01.1970
+    // Конвертируем в UNIX-таймстамп (число секунд от 01.01.1970
     const unsigned long seventyYears = 2208988800UL;
     unsigned long epoch = secsSince1900 - seventyYears;
-// Делаем поправку на местную тайм-зону
-    ntp_time = epoch + TIMEZONE*3600;    
+    // Делаем поправку на местную тайм-зону
+    ntp_time = epoch + TIMEZONE * 3600;
     Serial.print("Unix time = ");
     Serial.println(ntp_time);
   }
@@ -991,14 +1037,14 @@ bool GetNTP(void) {
 }
 
 /**
- * Посылаем запрос NTP серверу на заданный адрес
- */
+   Посылаем запрос NTP серверу на заданный адрес
+*/
 unsigned long sendNTPpacket(IPAddress& address)
 {
   Serial.println("sending NTP packet...");
-// Очистка буфера в 0
+  // Очистка буфера в 0
   memset(packetBuffer, 0, NTP_PACKET_SIZE);
-// Формируем строку зыпроса NTP сервера
+  // Формируем строку зыпроса NTP сервера
   packetBuffer[0] = 0b11100011;   // LI, Version, Mode
   packetBuffer[1] = 0;     // Stratum, or type of clock
   packetBuffer[2] = 6;     // Polling Interval
@@ -1008,8 +1054,8 @@ unsigned long sendNTPpacket(IPAddress& address)
   packetBuffer[13]  = 0x4E;
   packetBuffer[14]  = 49;
   packetBuffer[15]  = 52;
-// Посылаем запрос на NTP сервер (123 порт)
-  udp.beginPacket(address, 123); 
+  // Посылаем запрос на NTP сервер (123 порт)
+  udp.beginPacket(address, 123);
   udp.write(packetBuffer, NTP_PACKET_SIZE);
   udp.endPacket();
 }
@@ -1019,9 +1065,9 @@ unsigned long sendNTPpacket(IPAddress& address)
 /*
     Функция отвечает за подсветку дисплея
 */
-void lcdbacklight(){
-  
-   //-------опрос кнопок--------
+void lcdbacklight() {
+
+  //-------опрос кнопок--------
   button1S = !digitalRead(button1B);
   buttons1(); //отработка кнопок
   //-------опрос кнопок--------
@@ -1032,11 +1078,11 @@ void lcdbacklight(){
     button1P = 0;
     lcd.backlight();// Включаем подсветку дисплея
     nextTimeBut = millis() + 10000;
-    if ( backlighton ) 
-     {
-       backlighton = !backlighton;
-     }
+    if ( backlighton )
+    {
+      backlighton = !backlighton;
     }
+  }
   if (button1H) {
     Serial.println("hold");
     button1H = 0;
@@ -1045,25 +1091,25 @@ void lcdbacklight(){
     Serial.println("double");
     button1D = 0;
     backlighton = !backlighton;
-    }
+  }
 
-   if ( backlighton ) 
-     {
-     lcd.setCursor(19, 0);
-     lcd.print("*");   
-     lcd.backlight();// Включаем подсветку дисплея
-     }
-   else 
-     {     
-     lcd.setCursor(19, 0);
-     lcd.print(" ");
-     }
-      
- if (nextTimeBut <= millis() && !backlighton) {
-  //dooooo
-  lcd.noBacklight();
-  nextTimeBut = millis() + 5000;
- }
+  if ( backlighton )
+  {
+    lcd.setCursor(19, 0);
+    lcd.print("*");
+    lcd.backlight();// Включаем подсветку дисплея
+  }
+  else
+  {
+    lcd.setCursor(19, 0);
+    lcd.print(" ");
+  }
+
+  if (nextTimeBut <= millis() && !backlighton) {
+    //dooooo
+    lcd.noBacklight();
+    nextTimeBut = millis() + 5000;
+  }
 }
 
 
@@ -1111,32 +1157,32 @@ void buttons1() {
 //------------------------ОТРАБОТКА КНОПОК-------------------------
 
 /*
- Вывод времени с RTC
+  Вывод времени с RTC
 */
-void ShowTime(){
-    rtc.refresh();
-    int day = rtc.day();
-    int month = rtc.month();
-    int hour = rtc.hour();
-    int minute = rtc.minute();
-    int second = rtc.second(); 
-    lcd.setCursor(0, 0);
-    if (day < 10) lcd.print("0");
-    lcd.print(day); 
-    lcd.print("-"); 
-    if (month < 10) lcd.print("0");
-    lcd.print(month); 
-    lcd.print("-20"); 
-    lcd.print(rtc.year()); 
-    lcd.print(" "); 
-    if (hour < 10) lcd.print("0");
-    lcd.print(hour); 
-    lcd.print(":");  
-    if (minute < 10) lcd.print("0");
-    lcd.print(minute); 
-    lcd.print(":");  
-    if (second < 10) lcd.print("0");
-    lcd.print(second); 
+void ShowTime() {
+  rtc.refresh();
+  int day = rtc.day();
+  int month = rtc.month();
+  int hour = rtc.hour();
+  int minute = rtc.minute();
+  int second = rtc.second();
+  lcd.setCursor(0, 0);
+  if (day < 10) lcd.print("0");
+  lcd.print(day);
+  lcd.print("-");
+  if (month < 10) lcd.print("0");
+  lcd.print(month);
+  lcd.print("-20");
+  lcd.print(rtc.year());
+  lcd.print(" ");
+  if (hour < 10) lcd.print("0");
+  lcd.print(hour);
+  lcd.print(":");
+  if (minute < 10) lcd.print("0");
+  lcd.print(minute);
+  lcd.print(":");
+  if (second < 10) lcd.print("0");
+  lcd.print(second);
 }
 
 
@@ -1145,6 +1191,7 @@ void ShowTime(){
     Функция отвечает за отправку данных на MQTT сервер
 */
 bool mqttSendData() {
+  Serial.println("MQTT try");
   mqtt.setServer(config.mqtt_server.c_str(), 1883);
   if (config.mqtt_login.length()) mqtt.connect("weather station", config.mqtt_login.c_str(), config.mqtt_pass.c_str());
   else mqtt.connect("weather station");
@@ -1158,12 +1205,14 @@ bool mqttSendData() {
     mqttPublish("carbdiox", carbdiox.data);
     mqttPublish("batteryExt", batteryExt.data);
     mqtt.disconnect();
+    Serial.println("MQTT ok");
     return true;
   }
+  Serial.println("MQTT error");
   return false;
 }
 bool mqttPublish(String topic, float data) {
-  if(config.mqtt_path.length()) topic = config.mqtt_path + "/" + topic;
+  if (config.mqtt_path.length()) topic = config.mqtt_path + "/" + topic;
   return mqtt.publish(topic.c_str(), String(data).c_str(), true);
 }
 /*
@@ -1220,79 +1269,79 @@ bool authorized() {
 */
 void readSensors() {
   timerReadSensors = millis();
-  
+
   float newhumidity = 0;
   float newtemperature = 0;
-//  if (light.status) light.data = BH1750.readLightLevel();
-//  if (temperature.status) temperature.data = dht.readTemperature();
-//  if (humidity.status) humidity.data = SI7021.getHumidityPercent();
+  //  if (light.status) light.data = BH1750.readLightLevel();
+  //  if (temperature.status) temperature.data = dht.readTemperature();
+  //  if (humidity.status) humidity.data = SI7021.getHumidityPercent();
   if (humidity.status) newhumidity = dht.readHumidity();
   if (temperature.status) newtemperature = dht.readTemperature();
-  
+
   if (newtemperature <= 99 && newtemperature >= -99) temperature.data = newtemperature;
 
   if (newhumidity <= 100 && newhumidity >= 0) humidity.data = newhumidity;
   if (humidity.data > 100) humidity.data = 100;
   if (humidity.data < 0) humidity.data = 0;
-  
+
 
   if (pressure.status) pressure.data = BMP085.readPressure() / 133.3;
 
-  if (chs_s) 
-          {   
-            temperatureExt.data = temext/10.0;
-            humidityExt.data = humext;
-            batteryExt.data = batext;
-          }
-  
-//  carbdiox.data = 400 + random(0, 2000);
-/*
-  if (millis() > 60000) co2init1 = 1;
-  if (co2init1 && co2init2) 
-    {
-      co2Serial.begin(9600);
-      co2init2 = 0;
-      Serial.println("Starting MH-Z19.");
-    }
-*/
+  if (chs_s)
+  {
+    temperatureExt.data = temext / 10.0;
+    humidityExt.data = humext;
+    batteryExt.data = batext;
+  }
+
+  //  carbdiox.data = 400 + random(0, 2000);
+  /*
+    if (millis() > 60000) co2init1 = 1;
+    if (co2init1 && co2init2)
+      {
+        co2Serial.begin(9600);
+        co2init2 = 0;
+        Serial.println("Starting MH-Z19.");
+      }
+  */
   if (millis() > 60000) co2ready = 1;
   if (co2ready)
-    {
+  {
     Serial.println("reading data MH-Z19:");
     int ppm = readCO2();
-   Serial.println("  PPM = " + String(ppm));
-   if (ppm < 100 || ppm > 6000)
-   {
-    Serial.println("PPM not valid");
-//   lcd.setCursor(16, 2);
-//   lcd.print("-");
+    Serial.println("  PPM = " + String(ppm));
+    if (ppm < 100 || ppm > 6000)
+    {
+      Serial.println("PPM not valid");
+      //   lcd.setCursor(16, 2);
+      //   lcd.print("-");
     }
-   else
-   {
+    else
+    {
       carbdiox.data = ppm;
-//   lcd.setCursor(16, 2);
-//   lcd.print("+");
-   }
+      //   lcd.setCursor(16, 2);
+      //   lcd.print("+");
+    }
   }
-  
-    lcd.setCursor(0,1); 
-    lcd.print("                 ");
-    lcd.setCursor(0, 1);
-    lcd.print(humidity.data,0);
-    lcd.print("%");
-    if (humidity.data < 10) lcd.print("  ");
-    else if (humidity.data < 100) lcd.print(" ");
-    lcd.setCursor(5, 1);
-    lcd.print(temperature.data,1);
-//    lcd.print("C ");
-    lcd.print("\xDF");
-    lcd.setCursor(11, 1);
-    lcd.print(pressure.data);
 
-    
-    lcd.setCursor(11, 2);
-    if (carbdiox.data < 1000) lcd.print(" ");
-    lcd.print(carbdiox.data,0);
+  lcd.setCursor(0, 1);
+  lcd.print("                 ");
+  lcd.setCursor(0, 1);
+  lcd.print(humidity.data, 0);
+  lcd.print("%");
+  if (humidity.data < 10) lcd.print("  ");
+  else if (humidity.data < 100) lcd.print(" ");
+  lcd.setCursor(5, 1);
+  lcd.print(temperature.data, 1);
+  //    lcd.print("C ");
+  lcd.print("\xDF");
+  lcd.setCursor(11, 1);
+  lcd.print(pressure.data);
+
+
+  lcd.setCursor(11, 2);
+  if (carbdiox.data < 1000) lcd.print(" ");
+  lcd.print(carbdiox.data, 0);
   /*
     light.data = random(12000, 15000);
     temperature.data = random(25, 26) / 0.01;
@@ -1300,121 +1349,123 @@ void readSensors() {
     pressure.data = random(758, 759) * 133.3;
   */
 
-    if (((millis()/ 3600000)-stat[ 1 ][ 17 ]) >= 1.0 )
-      //заполняем текущее значение раз 1 час (3600000)
-     {
-      //сдвигаем массив влево, чтобы освободить предпоследнюю ячейку
-      int i= 0 ;
-      for (i = 0 ; i < 17 ; i++) stat[ 0 ][i] = stat[ 0 ][i+ 1 ];
-      for (i = 0 ; i < 17 ; i++) stat[ 1 ][i] = stat[ 1 ][i+ 1 ];
-      //dps.getPressure(&Pressure); //Записываем значения давления
-      //stat[ 0 ][ 11 ] = pressure.data/ 13.33 ;
-      stat[ 0 ][ 17 ] = pressure.data * 10;
-      stat[ 1 ][ 17 ] = millis()/ 3600000;
-      grafik( 0 , 1 , 0 );
-     }
+  if (((millis() / 3600000) - stat[ 1 ][ 17 ]) >= 1.0 )
+    //заполняем текущее значение раз 1 час (3600000)
+  {
+    //сдвигаем массив влево, чтобы освободить предпоследнюю ячейку
+    int i = 0 ;
+    for (i = 0 ; i < 17 ; i++) stat[ 0 ][i] = stat[ 0 ][i + 1 ];
+    for (i = 0 ; i < 17 ; i++) stat[ 1 ][i] = stat[ 1 ][i + 1 ];
+    //dps.getPressure(&Pressure); //Записываем значения давления
+    //stat[ 0 ][ 11 ] = pressure.data/ 13.33 ;
+    stat[ 0 ][ 17 ] = pressure.data * 10;
+    stat[ 1 ][ 17 ] = millis() / 3600000;
+    grafik( 0 , 1 , 0 );
+  }
 }
-     /*строим график,
-вызов усложнен для построения
-разных графиков из массива, первое
-число номер массива, затем
-периодичность выборки данных, потом
-начальное значение в массиве. Мы
-берем первый массив(0), берем каждое
-второе значение(2) и начинаем с начала
-(0)*/
+/*строим график,
+  вызов усложнен для построения
+  разных графиков из массива, первое
+  число номер массива, затем
+  периодичность выборки данных, потом
+  начальное значение в массиве. Мы
+  берем первый массив(0), берем каждое
+  второе значение(2) и начинаем с начала
+  (0)*/
 /*Мы будем строить относительные
-график, поэтому рассчитаем интервал
-в который укладываются значения. Мы
-можем использовать только восемь
-строчек одной ячейки дисплея,
-поэтому разобьем интервал на 8
-промежутков.*/
+  график, поэтому рассчитаем интервал
+  в который укладываются значения. Мы
+  можем использовать только восемь
+  строчек одной ячейки дисплея,
+  поэтому разобьем интервал на 8
+  промежутков.*/
 
 
 
 int interval( int x) {
- int maxy = -5000 ;
- int inty = 0 ;
- int minx = minimum(x);
- for ( int k = 0 ; k <= 17 ; k++) {
-  if (stat[ 1 ][k] != 0 ) { //если значение не ноль
-   if (stat[x][k] > maxy) maxy = stat[x][k]; //считаем максимальное значение
-   }}
- if (maxy == -5000 ) maxy = 0 ;
-//Строим интервал
- inty = maxy - minx;
- int intx = inty/8 ;
- 
- lcd.setCursor(18, 2);
- int intyz = round(inty /10.0);
-// int intyz = inty / 10;
-// if ((inty % 10) >= 5) intyz +=1;
-
- if (intyz < 1) lcd.print("<1");
-  else if (intyz < 10) 
-    { 
-      lcd.print(" ");
-      lcd.print(intyz);
+  int maxy = -5000 ;
+  int inty = 0 ;
+  int minx = minimum(x);
+  for ( int k = 0 ; k <= 17 ; k++) {
+    if (stat[ 1 ][k] != 0 ) { //если значение не ноль
+      if (stat[x][k] > maxy) maxy = stat[x][k]; //считаем максимальное значение
     }
+  }
+  if (maxy == -5000 ) maxy = 0 ;
+  //Строим интервал
+  inty = maxy - minx;
+  int intx = inty / 8 ;
+
+  lcd.setCursor(18, 2);
+  int intyz = round(inty / 10.0);
+  // int intyz = inty / 10;
+  // if ((inty % 10) >= 5) intyz +=1;
+
+  if (intyz < 1) lcd.print("<1");
+  else if (intyz < 10)
+  {
+    lcd.print(" ");
+    lcd.print(intyz);
+  }
   else lcd.print(intyz);
-  
-/*  lcd.setCursor(17, 2);
-  if (inty < 10) lcd.print("  ");
-  else if (inty < 100) lcd.print(" ");
-  lcd.print(inty);
+
+  /*  lcd.setCursor(17, 2);
+    if (inty < 10) lcd.print("  ");
+    else if (inty < 100) lcd.print(" ");
+    lcd.print(inty);
   */
-  
- return intx;
+
+  return intx;
 }
 /*При расчете интервала нам нужно
-минимальное значение в массиве:*/
+  минимальное значение в массиве:*/
 int minimum ( int d) {
- int minx = 32767 ;
- for ( int i = 0 ; i <= 17 ; i++) {
-  if (stat[ 1 ][i] != 0 ) { //если значение не ноль
-   if (stat[d][i] < minx) minx = stat[d][i]; //считаем минимальное значение
-  }}
- if (minx == 50000 ) minx = 0 ;
- return minx;
+  int minx = 32767 ;
+  for ( int i = 0 ; i <= 17 ; i++) {
+    if (stat[ 1 ][i] != 0 ) { //если значение не ноль
+      if (stat[d][i] < minx) minx = stat[d][i]; //считаем минимальное значение
+    }
+  }
+  if (minx == 50000 ) minx = 0 ;
+  return minx;
 }
 /*Строим сам график, если значений в
-массиве времени нет, выводим
-прочерк. Вызов функции усложнен для
-построения разных графиков из
-массива. Первое число номер массива,
-затем периодичность выборки данных,
-потом начальное значение в массиве.
-Мы берем первый массив(0), берем
-каждое второе значение(2) и начинаем
-с начала(0):*/
+  массиве времени нет, выводим
+  прочерк. Вызов функции усложнен для
+  построения разных графиков из
+  массива. Первое число номер массива,
+  затем периодичность выборки данных,
+  потом начальное значение в массиве.
+  Мы берем первый массив(0), берем
+  каждое второе значение(2) и начинаем
+  с начала(0):*/
 void grafik( int x, int y, int z) {
   int intx = interval(x); //вызовем функцию расчета интервала графика
   int minx = minimum(x); //Уточним минимальное значение
   lcd.setCursor( 0 , 3 );
   lcd.print( "P:" ); //Подпись на дисплее
-    
-  for ( int i=z; i <= 17 ; i= i + y){
+
+  for ( int i = z; i <= 17 ; i = i + y) {
     if (stat[x][i] == 0 )  { //проверяем есть ли данные о времени
-                lcd.print( "-" ); //если значений нет, отображаем прочерк
-    } else if (stat[x][i] > (minx + intx* 7 )) {
-    lcd.printByte( 0 );
-    } else if (stat[x][i] > (minx + intx* 6 )) {
-    lcd.printByte( 1 );
-    } else if (stat[x][i] > (minx + intx* 5 )) {
-    lcd.printByte( 2 );
-    } else if (stat[x][i] > (minx + intx* 4 )) {
-    lcd.printByte( 3 );
-    } else if (stat[x][i] > (minx + intx* 3 )) {
-    lcd.printByte( 4 );
-    } else if (stat[x][i] > (minx + intx* 2 )) {
-    lcd.printByte( 5 );
-    } else if (stat[x][i] > (minx + intx)){
-    lcd.printByte( 6 );
+      lcd.print( "-" ); //если значений нет, отображаем прочерк
+    } else if (stat[x][i] > (minx + intx * 7 )) {
+      lcd.printByte( 0 );
+    } else if (stat[x][i] > (minx + intx * 6 )) {
+      lcd.printByte( 1 );
+    } else if (stat[x][i] > (minx + intx * 5 )) {
+      lcd.printByte( 2 );
+    } else if (stat[x][i] > (minx + intx * 4 )) {
+      lcd.printByte( 3 );
+    } else if (stat[x][i] > (minx + intx * 3 )) {
+      lcd.printByte( 4 );
+    } else if (stat[x][i] > (minx + intx * 2 )) {
+      lcd.printByte( 5 );
+    } else if (stat[x][i] > (minx + intx)) {
+      lcd.printByte( 6 );
     } else {
-    lcd.printByte( 7 );
+      lcd.printByte( 7 );
     }
- }
+  }
 }
 
 
