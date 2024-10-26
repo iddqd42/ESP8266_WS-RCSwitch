@@ -919,12 +919,12 @@ int readCO2()
     {
       Serial.println("Wrong starting byte from co2 sensor!");
       co2err++;
-      if (co2err > 12)     //co2err > 3 --  так надо
+      if (co2err > 24)     //co2err > 3 --  так надо
       {
         lcd.clear();
         lcd.setCursor(6, 0);
-        lcd.print("RESTART (co2)");
-        delay(1000);
+        lcd.print("RESTART (co2)e1");
+        delay(5000);
         ESP.restart();
       }
       return -1;
@@ -934,11 +934,12 @@ int readCO2()
       {
         Serial.println("Wrong command from co2 sensor!");
         co2err++;
-        if (co2err > 3)
+        if (co2err > 24)
         {
           lcd.clear();
           lcd.setCursor(6, 0);
-          lcd.print("RESTART");
+        lcd.print("RESTART (co2)e2");
+        delay(5000);
           ESP.restart();
         }
         return -1;
@@ -956,11 +957,12 @@ int readCO2()
   {
     Serial.println("Wrong command from co2 sensor!");
     co2err++;
-    if (co2err > 3)
+    if (co2err > 24)
     {
       lcd.clear();
       lcd.setCursor(6, 0);
-      lcd.print("RESTART");
+        lcd.print("RESTART (co2)e2");
+        delay(5000);
       ESP.restart();
     }
     return -1;
